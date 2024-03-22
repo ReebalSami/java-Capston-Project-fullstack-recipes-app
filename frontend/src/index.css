@@ -1,4 +1,6 @@
-body, :root {
-    margin: 0;
+body, html {
+    margin-right: 0;
+    margin-left: 0;
+    margin-top: 0;
     padding: 0;
 }
