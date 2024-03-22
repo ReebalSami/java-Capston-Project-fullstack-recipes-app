@@ -200,6 +200,38 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     value={formData.origin}
                     onChange={handleChangeOrigin}
                 />
+                <label htmlFor="preparationTimeHours">Preparation Time Hours:</label>
+                <input
+            type="number"
+            id="preparationTimeHours"
+            name="hours"
+            value={formData.preparationTime.hours}
+            onChange={handleChangePreparationTime}
+            />
+                <label htmlFor="preparationTimeMinutes">Preparation Time Minutes:</label>
+                <input
+            type="number"
+            id="preparationTimeMinutes"
+            name="minutes"
+            value={formData.preparationTime.minutes}
+            onChange={handleChangePreparationTime}
+            />
+                <label htmlFor="totalTimeHours">Total Time Hours:</label>
+                <input
+            type="number"
+            id="totalTimeHours"
+            name="hours"
+            value={formData.totalTime.hours}
+            onChange={handleChangeTotalTime}
+            />
+                <label htmlFor="totalTimeMinutes">Total Time Minutes:</label>
+                <input
+            type="number"
+            id="totalTimeMinutes"
+            name="minutes"
+            value={formData.totalTime.minutes}
+            onChange={handleChangeTotalTime}
+            />
                 <label htmlFor="type">Type:</label>
                 <input
                     type="text"
@@ -208,44 +240,12 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     value={formData.type}
                     onChange={handleChangeType}
                 />
-                <label htmlFor="preparationTimeHours">Preparation Time Hours:</label>
-                <input
-                    type="number"
-                    id="preparationTimeHours"
-                    name="hours"
-                    value={formData.preparationTime.hours}
-                    onChange={handleChangePreparationTime}
-                />
-                <label htmlFor="preparationTimeMinutes">Preparation Time Minutes:</label>
-                <input
-                    type="number"
-                    id="preparationTimeMinutes"
-                    name="minutes"
-                    value={formData.preparationTime.minutes}
-                    onChange={handleChangePreparationTime}
-                />
-                <label htmlFor="totalTimeHours">Total Time Hours:</label>
-                <input
-                    type="number"
-                    id="totalTimeHours"
-                    name="hours"
-                    value={formData.totalTime.hours}
-                    onChange={handleChangeTotalTime}
-                />
-                <label htmlFor="totalTimeMinutes">Total Time Minutes:</label>
-                <input
-                    type="number"
-                    id="totalTimeMinutes"
-                    name="minutes"
-                    value={formData.totalTime.minutes}
-                    onChange={handleChangeTotalTime}
-                />
                 <label htmlFor="category">Category:</label>
                 <input
-                    type="text"
-                    id="category"
-                    name="category"
-                    value={formData.category}
+            type="text"
+            id="category"
+            name="category"
+            value={formData.category}
                     onChange={handleChangeCategory}
                 />
                 <label htmlFor="difficulty">Difficulty:</label>
