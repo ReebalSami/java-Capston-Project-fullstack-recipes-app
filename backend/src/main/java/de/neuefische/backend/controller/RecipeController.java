@@ -1,11 +1,12 @@
 package de.neuefische.backend.controller;
 
-import de.neuefische.backend.exception.RecipeNotFoundException;
 import de.neuefische.backend.model.recipe.RecipeNormalized;
 import de.neuefische.backend.service.RecipeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -22,12 +23,6 @@ public class RecipeController {
     @GetMapping("/{id}")
     public RecipeNormalized getRecipeById(@PathVariable String id){
         return service.getRecipeById(id);
-    }
-
-    @ExceptionHandler(RecipeNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleRecipeNotFoundException(RecipeNotFoundException exception){
-        return exception.getMessage();
     }
 
 }

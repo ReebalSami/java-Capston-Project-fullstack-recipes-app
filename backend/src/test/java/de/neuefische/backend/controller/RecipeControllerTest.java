@@ -1,5 +1,7 @@
 package de.neuefische.backend.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.neuefische.backend.exception.ErrorMessage;
 import de.neuefische.backend.model.recipe.*;
 import de.neuefische.backend.repository.RecipesRepo;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,8 @@ class RecipeControllerTest {
     @Autowired
     private RecipesRepo repo;
     String message = "Recipe with ID: ${id} not found.";
+    @Autowired
+    private ObjectMapper objectmapper;
 
     @Test
     void getAllRecipes_returnEmptyList_WhenCalledInitially() throws Exception {
@@ -208,7 +212,6 @@ class RecipeControllerTest {
         //WHEN & THEN
         mvc.perform(get("/api/recipes/1"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string(message.replace("${id}", id)));
+                .andExpect(content().json(objectmapper.writeValueAsString(new ErrorMessage(message.replace("${id}", id)))));
     }
-
 }
