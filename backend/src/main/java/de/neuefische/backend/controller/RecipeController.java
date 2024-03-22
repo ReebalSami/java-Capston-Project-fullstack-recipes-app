@@ -1,12 +1,11 @@
 package de.neuefische.backend.controller;
 
+import de.neuefische.backend.model.recipe.RecipeDto;
 import de.neuefische.backend.model.recipe.RecipeNormalized;
 import de.neuefische.backend.service.RecipeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +23,12 @@ public class RecipeController {
     public RecipeNormalized getRecipeById(@PathVariable String id){
         return service.getRecipeById(id);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public RecipeNormalized saveNewRecipe(@RequestBody RecipeDto recipeDto) {
+        return service.saveNewRecipe(recipeDto);
+    }
+
 
 }
