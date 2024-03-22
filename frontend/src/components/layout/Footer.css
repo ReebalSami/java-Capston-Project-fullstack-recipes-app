@@ -1,0 +1,46 @@
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+
+}
+.first-line {
+    margin-bottom: 10px;
+}
+.second-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.second-line a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer.hidden {
+    transform: translateY(100%);
+}
+
+footer.visible {
+    transform: translateY(0);
+}
