@@ -1,5 +1,5 @@
 export default function Search() {
     return (
-        <p>Search</p>
+        <p className="search-text">Search</p>
     );
 }

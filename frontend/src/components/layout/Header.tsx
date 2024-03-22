@@ -1,8 +1,7 @@
 import Navigation from "./Navigation.tsx";
 import "./Header.css";
-import "../search/Search.tsx";
-import Search from "../search/Search.tsx";
 import UserAction from "../userActions/UserAction.tsx";
+import Search from "../search/Search.tsx";
 
 export default function Header() {
 
