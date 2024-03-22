@@ -4,6 +4,7 @@ import de.neuefische.backend.model.recipe.RecipeNormalized;
 import de.neuefische.backend.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,4 +19,10 @@ public class RecipeController {
     public List<RecipeNormalized> getAllRecipes(){
         return service.getAllRecipes();
     }
+
+    @GetMapping("/{id}")
+    public RecipeNormalized getRecipeById(@PathVariable String id){
+        return service.getRecipeById(id);
+    }
+
 }
