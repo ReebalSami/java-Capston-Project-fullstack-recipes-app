@@ -23,7 +23,7 @@ export default function RecipeDetailsPage(props: Readonly<RecipeDetailsPageProps
                 console.error("Error fetching recipe", error);
                 props.setRecipe(null);
             });
-    }, [id]);
+    }, [id, props]);
 
     useEffect(() => {
         fetchRecipeById();
