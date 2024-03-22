@@ -12,7 +12,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-
 class RecipeServiceTest {
     private final RecipesRepo repo = mock(RecipesRepo.class);
     private final RecipeService recipeService = new RecipeService(repo);
