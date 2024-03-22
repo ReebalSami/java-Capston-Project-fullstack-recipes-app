@@ -8,8 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -213,5 +216,65 @@ class RecipeControllerTest {
         mvc.perform(get("/api/recipes/1"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(objectmapper.writeValueAsString(new ErrorMessage(message.replace("${id}", id)))));
+    }
+
+    @Test
+    void saveNewRecipe_returnsRecipeWithIdNotEmpty_whenWithRequestBodyCalled() throws Exception {
+        //GIVEN
+        String requestBody = """
+                {
+                    "name": "Test Recipe",
+                    "description": "Test Description",
+                    "instructions": "Test Instructions",
+                    "author": "Test Author",
+                    "origin": "Test Origin",
+                    "type": ["VEGETARIAN", "WITH_MEAT"],
+                    "preparationTime": {"hours": 0, "minutes": 30},
+                    "totalTime": {"hours": 1, "minutes": 15},
+                    "category": ["DINNER", "SIDE_DISH"],
+                    "difficulty": "EASY",
+                    "ingredients": [
+                                        {
+                                            "name": "name test",
+                                            "quantity": "quantity 1"
+                                        },
+                                        {
+                                            "name": "name test 2",
+                                            "quantity": "quantity 2"
+                                        }
+                                    ]
+                }
+                """;
+        //WHEN & THEN
+        mvc.perform(MockMvcRequestBuilders.post("/api/recipes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
+                .andExpect(content().json("""
+                        {
+                            "name": "Test Recipe",
+                            "description": "Test Description",
+                            "instructions": "Test Instructions",
+                            "author": "Test Author",
+                            "origin": "Test Origin",
+                            "type": ["Vegetarian", "With Meat"],
+                            "preparationTime": {"hours": 0, "minutes": 30},
+                            "totalTime": {"hours": 1, "minutes": 15},
+                            "category": ["Dinner", "Side Dish"],
+                            "difficulty": "Easy",
+                            "ingredients": [
+                                                {
+                                                    "name": "name test",
+                                                    "quantity": "quantity 1"
+                                                },
+                                                {
+                                                    "name": "name test 2",
+                                                    "quantity": "quantity 2"
+                                                }
+                                            ]
+                        }
+                        """))
+                .andReturn();
     }
 }
