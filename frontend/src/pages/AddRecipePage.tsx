@@ -1,7 +1,6 @@
 import "./AddRecipePage.css";
 import {ChangeEvent, FormEvent, useState} from "react";
 import {addRecipeToLibrary} from "../utility_functions/addRecipe.ts";
-import {SelectChangeEvent} from "@mui/material";
 import {Recipe} from "../types/Recipe.ts";
 
 type AddRecipePageProps = {
@@ -10,8 +9,6 @@ type AddRecipePageProps = {
 }
 
 export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
-    const [category, setCategory] = useState<string[]>([]);
-    const [type, setType] = useState<string[]>([]);
     const [formData, setFormData] = useState<Recipe>({
         name: "",
         description: "",
@@ -27,57 +24,21 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
     });
 
     const [error, setError] = useState(false);
-
-    const handleChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
+    const changeFormValue = (key: string, value: string | string[] | number) => {
         setFormData((prevData) => ({
-            ...prevData,
-            name: value,
+            ...prevData, //...spread operator
+            [key]: value,
         }));
-        setError(false);
-    };
-
-    const handleChangeDescription = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        const value = event.target.value;
-        setFormData((prevData) => ({
-            ...prevData,
-            description: value,
-        }));
-    };
-
-    const handleChangeInstructions = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        const value = event.target.value;
-        setFormData((prevData) => ({
-            ...prevData,
-            instructions: value,
-        }));
-    };
-
-    const handleChangeAuthor = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setFormData((prevData) => ({
-            ...prevData,
-            author: value,
-        }));
-    };
-
-    const handleChangeOrigin = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setFormData((prevData) => ({
-            ...prevData,
-            origin: value,
-        }));
-    };
-
-    const handleChangeType = (event: SelectChangeEvent<typeof type>) => {
-        const value = event.target.value;
-        const updatedType = typeof value === 'string' ? value.split(',') : value;
-        setType(updatedType);
-        setFormData((prevData) => ({
-            ...prevData,
-            type: updatedType,
-        }));
-    };
+    }
+    const handleChangeEvent = (inputType: "string" | "array" ,key: string, event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        let value: string | string[] = event.target.value;
+        if (inputType === "string") {
+            changeFormValue(key, value);
+            return;
+        }
+        value = value.split(',');
+        changeFormValue(key, value);
+    }
 
     const handleChangePreparationTime = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -101,15 +62,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
         }));
     };
 
-    const handleChangeCategory = (event: SelectChangeEvent<typeof category>) => {
-        const value = event.target.value;
-        const updatedCategory = typeof value === 'string' ? value.split(',') : value;
-        setType(updatedCategory);
-        setFormData((prevData) => ({
-            ...prevData,
-            category: updatedCategory,
-        }));
-    };
+
     const handleChangeDifficulty = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setFormData((prevData) => ({
@@ -154,8 +107,6 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
             difficulty: "",
             ingredients: [{ name: "", quantity: "" }]
         });
-        setCategory([]);
-        setType([]);
     };
 
     return (
@@ -168,21 +119,21 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     id="name"
                     name="name"
                     value={formData.name}
-                    onChange={handleChangeName}
+                    onChange={handleChangeEvent.bind(null, 'string', 'name')}
                 />
                 <label htmlFor="description">Description:</label>
                 <textarea
                     id="description"
                     name="description"
                     value={formData.description}
-                    onChange={handleChangeDescription}
+                    onChange={handleChangeEvent.bind(null, "string", "description")}
                 />
                 <label htmlFor="instructions">Instructions:</label>
                 <textarea
                     id="instructions"
                     name="instructions"
                     value={formData.instructions}
-                    onChange={handleChangeInstructions}
+                    onChange={handleChangeEvent.bind(null, "string", "instructions")}
                 />
                 <label htmlFor="author">Author:</label>
                 <input
@@ -190,7 +141,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     id="author"
                     name="author"
                     value={formData.author}
-                    onChange={handleChangeAuthor}
+                    onChange={handleChangeEvent.bind(null, 'string', 'author')}
                 />
                 <label htmlFor="origin">Origin:</label>
                 <input
@@ -198,7 +149,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     id="origin"
                     name="origin"
                     value={formData.origin}
-                    onChange={handleChangeOrigin}
+                    onChange={handleChangeEvent.bind(null, 'string', 'origin')}
                 />
                 <label htmlFor="preparationTimeHours">Preparation Time Hours:</label>
                 <input
@@ -238,7 +189,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     id="type"
                     name="type"
                     value={formData.type}
-                    onChange={handleChangeType}
+                    onChange={handleChangeEvent.bind(null, 'array', 'type')}
                 />
                 <label htmlFor="category">Category:</label>
                 <input
@@ -246,7 +197,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
             id="category"
             name="category"
             value={formData.category}
-                    onChange={handleChangeCategory}
+                    onChange={handleChangeEvent.bind(null, 'array', 'category')}
                 />
                 <label htmlFor="difficulty">Difficulty:</label>
                 <input
