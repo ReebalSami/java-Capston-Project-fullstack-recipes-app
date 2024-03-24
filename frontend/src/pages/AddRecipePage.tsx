@@ -52,17 +52,6 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
         }
     }
 
-    const handleChangeTotalTime = (event: ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = event.target;
-        setFormData(prevData => ({
-            ...prevData,
-            totalTime: {
-                ...prevData.totalTime,
-                [name]: parseInt(value, 10) || 0
-            }
-        }));
-    };
-
     const handleChangeIngredients = (event: ChangeEvent<HTMLInputElement>, index: number, fieldName: 'name' | 'quantity') => {
         const {value} = event.target;
         const newIngredients = [...formData.ingredients];
@@ -165,7 +154,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     id="totalTimeHours"
                     name="hours"
                     value={formData.totalTime.hours}
-                    onChange={handleChangeTotalTime}
+                    onChange={handleChangeEvent.bind(null, 'time', 'totalTime')}
                 />
                 <label htmlFor="totalTimeMinutes">Total Time Minutes:</label>
                 <input
