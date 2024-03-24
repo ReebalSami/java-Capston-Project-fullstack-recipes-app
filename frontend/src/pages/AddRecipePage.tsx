@@ -34,7 +34,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
     const handleChangeEvent = (
                                 inputType: RecipeFormPrimitiveInputType,
                                 key: string,
-                                event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+                                event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
                                 ) => {
 
         let value: RecipeFormPrimitiveInputValue = event.target.value;
@@ -190,13 +190,16 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     onChange={handleChangeEvent.bind(null, 'array', 'category')}
                 />
                 <label htmlFor="difficulty">Difficulty:</label>
-                <input
-                    type="text"
+                <select
                     id="difficulty"
                     name="difficulty"
                     value={formData.difficulty}
                     onChange={handleChangeEvent.bind(null, 'string', 'difficulty')}
-                />
+                >
+                    <option value="EASY">Easy</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HARD">Hard</option>
+                </select>
                 <label htmlFor="ingredients">Ingredients:</label>
                 {formData.ingredients.map((ingredient, index) => (
                     <div key={`${index}-${ingredient.name}`}>
