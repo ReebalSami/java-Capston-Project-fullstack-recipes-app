@@ -1,7 +1,7 @@
 import "./AddRecipePage.css";
 import {ChangeEvent, FormEvent, useState} from "react";
 import {addRecipeToLibrary} from "../utility_functions/addRecipe.ts";
-import {Recipe} from "../types/Recipe.ts";
+import {Recipe, RecipeFormPrimitiveInputType, RecipeFormPrimitiveInputValue} from "../types/Recipe.ts";
 
 
 type AddRecipePageProps = {
@@ -25,31 +25,42 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
     });
 
     const [error, setError] = useState(false);
-    const changeFormValue = (key: string, value: string | string[] | number | { hours: number, minutes: number }) => {
+    const changeFormValue = (key: string, value: RecipeFormPrimitiveInputValue) => {
         setFormData((prevData) => ({
             ...prevData, //...spread operator
             [key]: value,
         }));
     }
-    const handleChangeEvent = (inputType: "string" | "array" | "number" | "time", key: string, event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        let value: string | string[] | number | { hours: number, minutes: number } = event.target.value;
-        if (inputType === "string" || inputType === "number") {
+    const handleChangeEvent = (
+                                inputType: RecipeFormPrimitiveInputType,
+                                key: string,
+                                event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+                                ) => {
+
+        let value: RecipeFormPrimitiveInputValue = event.target.value;
+
+        if (inputType === "string") {
             changeFormValue(key, value);
             return;
-        }
-        if (inputType === "time") {
-            const {name, value} = event.target;
-            const timeKey = name === "hours" ? "hours" : "minutes";
-            const newValue = {
-                ...formData.preparationTime,
-                [timeKey]: parseInt(value)
-            };
-            changeFormValue("preparationTime", newValue);
         }
         if (inputType === "array") {
             value = value.split(',');
             changeFormValue(key, value);
         }
+    };
+
+    const handleTimeInput = (key:string, hourInputName: string, minuteInputName: string) => {
+        const hours = getFormElementValue(hourInputName);
+        const minutes = getFormElementValue(minuteInputName);
+        setFormData((prevData) => ({
+            ...prevData,
+            [key]: {hours, minutes},
+        }));
+    }
+    const getFormElementValue = (key: string) => {
+        const form = document.getElementById("recipe-form") as HTMLFormElement;
+        const input = form.elements.namedItem(key) as HTMLInputElement;
+        return input.value;
     }
 
     const handleChangeIngredients = (event: ChangeEvent<HTMLInputElement>, index: number, fieldName: 'name' | 'quantity') => {
@@ -72,8 +83,6 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
             setError(true);
             return;
         }
-
-
         await addRecipeToLibrary(formData, props.fetchRecipes);
         setFormData({
             name: "",
@@ -93,7 +102,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
     return (
         <div className={"addRecipePage"}>
             <h1>Add Recipe</h1>
-            <form className={"addRecipeForm"} onSubmit={handleOnSubmit}>
+            <form className={"addRecipeForm"} id="recipe-form" onSubmit={handleOnSubmit}>
                 <label htmlFor="name">Name:</label>
                 <input
                     type="text"
@@ -136,33 +145,33 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                 <input
                     type="number"
                     id="hours"
-                    name="hours"
+                    name="preparationTimeHours"
                     value={formData.preparationTime.hours}
-                    onChange={handleChangeEvent.bind(null, 'time', 'preparationTime')}
+                    onChange={handleTimeInput.bind(null, 'preparationTime', 'preparationTimeHours', 'preparationTimeMinutes')}
                 />
                 <label htmlFor="minutes">Preparation Time (minutes):</label>
                 <input
                     type="number"
                     id="minutes"
-                    name="minutes"
+                    name="preparationTimeMinutes"
                     value={formData.preparationTime.minutes}
-                    onChange={handleChangeEvent.bind(null, 'time', 'preparationTime')}
+                    onChange={handleTimeInput.bind(null, 'preparationTime', 'preparationTimeHours', 'preparationTimeMinutes')}
                 />
                 <label htmlFor="totalTimeHours">Total Time Hours:</label>
                 <input
                     type="number"
                     id="totalTimeHours"
-                    name="hours"
+                    name="totalTimeHours"
                     value={formData.totalTime.hours}
-                    onChange={handleChangeEvent.bind(null, 'time', 'totalTime')}
+                    onChange={handleTimeInput.bind(null, 'totalTime', 'totalTimeHours', 'totalTimeMinutes')}
                 />
                 <label htmlFor="totalTimeMinutes">Total Time Minutes:</label>
                 <input
                     type="number"
                     id="totalTimeMinutes"
-                    name="minutes"
+                    name="totalTimeMinutes"
                     value={formData.totalTime.minutes}
-                    onChange={handleChangeTotalTime}
+                    onChange={handleTimeInput.bind(null, 'totalTime', 'totalTimeHours', 'totalTimeMinutes')}
                 />
                 <label htmlFor="type">Type:</label>
                 <input
