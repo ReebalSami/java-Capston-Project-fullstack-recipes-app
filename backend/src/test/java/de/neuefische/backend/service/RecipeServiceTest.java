@@ -12,7 +12,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-
 class RecipeServiceTest {
     private final RecipesRepo repo = mock(RecipesRepo.class);
     private final RecipeService recipeService = new RecipeService(repo);
@@ -116,5 +115,56 @@ class RecipeServiceTest {
         String id = "1";
         //THEN
         assertThrows(RecipeNotFoundException.class, () -> recipeService.getRecipeById(id));
+    }
+
+    @Test
+    void saveNewRecipe() {
+        //GIVEN
+        RecipeDto recipeDto = new RecipeDto(
+                "Test Recipe",
+                "Test Description",
+                "Test Instructions",
+                "Test Author",
+                "Test Origin",
+                List.of(RecipeType.VEGETARIAN, RecipeType.WITH_MEAT),
+                new PreparationTime(0, 30),
+                new TotalTime(1, 15),
+                List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
+                RecipeDifficulty.EASY,
+                List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2"))
+        );
+        RecipeNormalized expected = new RecipeNormalized("1",
+                "Test Recipe",
+                "Test Description",
+                "Test Instructions",
+                "Test Author",
+                "Test Origin",
+                List.of(RecipeType.VEGETARIAN.getNormalType(), RecipeType.WITH_MEAT.getNormalType()),
+                new PreparationTime(0, 30),
+                new TotalTime(1, 15),
+                List.of(RecipeCategory.DINNER.getNormalCategory(), RecipeCategory.SIDE_DISH.getNormalCategory()),
+                RecipeDifficulty.EASY.getNormalDifficulty(),
+                List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2"))
+        );
+        Recipe expectedRecipes = new Recipe("1",
+                "Test Recipe",
+                "Test Description",
+                "Test Instructions",
+                "Test Author",
+                "Test Origin",
+                List.of(RecipeType.VEGETARIAN, RecipeType.WITH_MEAT),
+                new PreparationTime(0, 30),
+                new TotalTime(1, 15),
+                List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
+                RecipeDifficulty.EASY,
+                List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2"))
+        );
+
+        //WHEN
+        when(repo.save(any(Recipe.class))).thenReturn(expectedRecipes);
+        RecipeNormalized actual = recipeService.saveNewRecipe(recipeDto);
+        //THEN
+        verify(repo).save(any(Recipe.class));
+        assertEquals(expected, actual);
     }
 }

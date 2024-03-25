@@ -5,14 +5,19 @@ export type Recipe = {
     instructions: string;
     author: string;
     origin: string;
-    type: string[];
+    type: TypeList;
     preparationTime: PreparationTime;
     totalTime: TotalTime;
-    category: string[];
+    category: CategoryList;
     difficulty: string;
     ingredients: RecipeIngredients[];
 
 }
+export type RecipeTime = PreparationTime | TotalTime;
+export type RecipeFormPrimitiveInputType = "string" | "array" | "number";
+export type RecipeFormPrimitiveInputValue = string | CategoryList | TypeList;
+export type CategoryList = string[];
+export type TypeList = string[];
 
 export type PreparationTime = {
     hours: number;
