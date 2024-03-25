@@ -48,7 +48,6 @@ public class RecipeService {
         return new RecipeNormalized(temp);
     }
 
-    // This method is not used in the frontend. It's only used as help function, because of the Normalized enums.
     public Recipe findRecipeById(String id) {
         return repo
                 .findById(id)
