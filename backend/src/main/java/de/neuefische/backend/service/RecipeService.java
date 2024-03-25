@@ -32,17 +32,17 @@ public class RecipeService {
     public RecipeNormalized saveNewRecipe(RecipeDto recipeDto) {
         Recipe temp = repo.save(new Recipe(
                 null,
-                recipeDto.getName(),
-                recipeDto.getDescription(),
-                recipeDto.getInstructions(),
-                recipeDto.getAuthor(),
-                recipeDto.getOrigin(),
-                recipeDto.getType(),
-                recipeDto.getPreparationTime(),
-                recipeDto.getTotalTime(),
-                recipeDto.getCategory(),
-                recipeDto.getDifficulty(),
-                recipeDto.getIngredients()
+                recipeDto.name(),
+                recipeDto.description(),
+                recipeDto.instructions(),
+                recipeDto.author(),
+                recipeDto.origin(),
+                recipeDto.type(),
+                recipeDto.preparationTime(),
+                recipeDto.totalTime(),
+                recipeDto.category(),
+                recipeDto.difficulty(),
+                recipeDto.ingredients()
         ));
 
         return new RecipeNormalized(temp);
