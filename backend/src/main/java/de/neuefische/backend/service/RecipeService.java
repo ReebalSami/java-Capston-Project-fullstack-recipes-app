@@ -28,7 +28,6 @@ public class RecipeService {
                 .orElseThrow(() -> new RecipeNotFoundException(message.replace("${id}", id)));
     }
 
-
     public RecipeNormalized saveNewRecipe(RecipeDto recipeDto) {
         Recipe temp = repo.save(new Recipe(
                 null,
@@ -52,6 +51,23 @@ public class RecipeService {
         return repo
                 .findById(id)
                 .orElseThrow(() -> new RecipeNotFoundException("Recipe with ID: " + id + " not found."));
+    }
+
+    public RecipeNormalized updateRecipeById(String id, RecipeDto recipeDto) {
+        Recipe recipe = findRecipeById(id);
+        recipe.setName(recipeDto.name());
+        recipe.setDescription(recipeDto.description());
+        recipe.setInstructions(recipeDto.instructions());
+        recipe.setAuthor(recipeDto.author());
+        recipe.setOrigin(recipeDto.origin());
+        recipe.setType(recipeDto.type());
+        recipe.setPreparationTime(recipeDto.preparationTime());
+        recipe.setTotalTime(recipeDto.totalTime());
+        recipe.setCategory(recipeDto.category());
+        recipe.setDifficulty(recipeDto.difficulty());
+        recipe.setIngredients(recipeDto.ingredients());
+        repo.save(recipe);
+        return new RecipeNormalized(recipe);
     }
 
     public String deleteById(String id) {

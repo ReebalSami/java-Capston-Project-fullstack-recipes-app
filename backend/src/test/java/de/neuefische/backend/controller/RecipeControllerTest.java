@@ -279,7 +279,89 @@ class RecipeControllerTest {
     }
 
     @Test
-    void deleteRecipeById_() throws Exception {
+    void updateRecipeById_returnsUpdatedRecipe_whenCalledWithChanges() throws Exception {
+        //GIVEN
+        PreparationTime preparationTime = new PreparationTime(0, 30);
+        TotalTime totalTime = new TotalTime(1, 15);
+        List<RecipeIngredients> recipeIngredients = new ArrayList<>();
+        recipeIngredients.add(new RecipeIngredients("name test", "quantity 1"));
+        recipeIngredients.add(new RecipeIngredients("name test 2", "quantity 2"));
+        Recipe recipe = new Recipe("1",
+                "Test Recipe",
+                "Test Description",
+                "Test Instructions",
+                "Test Author",
+                "Test Origin",
+                List.of(RecipeType.VEGETARIAN, RecipeType.WITH_MEAT),
+                preparationTime,
+                totalTime,
+                List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
+                RecipeDifficulty.EASY,
+                recipeIngredients
+        );
+        repo.save(recipe);
+        String requestBody = """
+                {
+                    "name": "Test Recipe Updated",
+                    "description": "Test Description Updated",
+                    "instructions": "Test Instructions Updated",
+                    "author": "Test Author Updated",
+                    "origin": "Test Origin Updated",
+                    "type": ["VEGAN", "GLUTEN_FREE"],
+                    "preparationTime": {"hours": 0, "minutes": 35},
+                    "totalTime": {"hours": 2, "minutes": 40},
+                    "category": ["BREAKFAST", "SIDE_DISH"],
+                    "difficulty": "HARD",
+                    "ingredients": [
+                                        {
+                                            "name": "name test 5",
+                                            "quantity": "quantity 20"
+                                        },
+                                        {
+                                            "name": "name test 6",
+                                            "quantity": "quantity 30"
+                                        }
+                                    ]
+                }
+                """;
+        //WHEN & THEN
+        mvc.perform(MockMvcRequestBuilders.put("/api/recipes/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                                "id": "1",
+                                "name": "Test Recipe Updated",
+                                "description": "Test Description Updated",
+                                "instructions": "Test Instructions Updated",
+                                "author": "Test Author Updated",
+                                "origin": "Test Origin Updated",
+                                "type": ["Vegan", "Gluten Free"],
+                                "preparationTime": {"hours": 0, "minutes": 35},
+                                "totalTime": {"hours": 2, "minutes": 40},
+                                "category": ["Breakfast", "Side Dish"],
+                                "difficulty": "Hard",
+                                "ingredients": [
+                                                    {
+                                                        "name": "name test 5",
+                                                        "quantity": "quantity 20"
+                                                    },
+                                                    {
+                                                        "name": "name test 6",
+                                                        "quantity": "quantity 30"
+                                                    }
+                                                        
+                                                ]
+                        }
+                                                
+                                             """))
+                .andReturn();
+
+    }
+
+    @Test
+    void deleteById_returnsString_whenRecipeSuccessfullyDeleted() throws Exception {
         //GIVEN
         String id = "1";
         PreparationTime preparationTime = new PreparationTime(0, 30);
