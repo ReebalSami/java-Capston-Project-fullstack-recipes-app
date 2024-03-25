@@ -30,5 +30,9 @@ public class RecipeController {
         return service.saveNewRecipe(recipeDto);
     }
 
+    @DeleteMapping("/{id}")
+    public String deleteRecipeById(@PathVariable String id){
+        return service.deleteById(id);
+    }
 
 }

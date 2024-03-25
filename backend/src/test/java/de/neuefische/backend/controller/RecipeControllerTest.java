@@ -277,4 +277,34 @@ class RecipeControllerTest {
                         """))
                 .andReturn();
     }
+
+    @Test
+    void deleteRecipeById_() throws Exception {
+        //GIVEN
+        String id = "1";
+        PreparationTime preparationTime = new PreparationTime(0, 30);
+        TotalTime totalTime = new TotalTime(1, 15);
+        List<RecipeIngredients> recipeIngredients = new ArrayList<>();
+        recipeIngredients.add(new RecipeIngredients("name test", "quantity 1"));
+        recipeIngredients.add(new RecipeIngredients("name test 2", "quantity 2"));
+        Recipe recipe = new Recipe(id,
+                "Test Recipe",
+                "Test Description",
+                "Test Instructions",
+                "Test Author",
+                "Test Origin",
+                List.of(RecipeType.VEGETARIAN, RecipeType.WITH_MEAT),
+                preparationTime,
+                totalTime,
+                List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
+                RecipeDifficulty.EASY,
+                recipeIngredients
+        );
+        repo.save(recipe);
+        String message = "Recipe with ID: 1 has been deleted successfully.";
+        //WHEN & THEN
+        mvc.perform(MockMvcRequestBuilders.delete("/api/recipes/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(message));
+    }
 }
