@@ -41,7 +41,7 @@ export default function App() {
             <Routes>
                 <Route path={"/"} element={<HomePage recipes={recipes}/>}/>
                 <Route path="/recipes" element={<RecipesPage recipes={recipes}/>}/>
-                <Route path="/recipes/:id" element={<RecipeDetailsPage recipe={recipe} setRecipe={setRecipe}/>}/>
+                <Route path="/recipes/:id" element={<RecipeDetailsPage recipe={recipe} setRecipe={setRecipe} fetchRecipes={fetchRecipes}/>}/>
                 <Route path="/recipes/add" element={<AddRecipePage recipes={recipes} fetchRecipes={fetchRecipes}/>}/>
             </Routes>
         </Layout>

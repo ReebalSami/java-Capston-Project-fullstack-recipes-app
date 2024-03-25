@@ -3,10 +3,13 @@ import {Navigate, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import {Recipe, RecipeIngredients} from "../types/Recipe.ts";
 import "./RecipeDetailsPage.css";
+import {Button, Stack} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type RecipeDetailsPageProps = {
     recipe: Recipe | null | undefined;
     setRecipe: (recipe: Recipe | null) => void;
+    fetchRecipes: () => void;
 }
 export default function RecipeDetailsPage(props: Readonly<RecipeDetailsPageProps>) {
     const params = useParams<{ id: string }>();
@@ -37,7 +40,6 @@ export default function RecipeDetailsPage(props: Readonly<RecipeDetailsPageProps
     }
 
     if (props.recipe === undefined) {
-        // Render a loading spinner or skeleton UI
         return <div>Loading...</div>;
     }
 
@@ -50,6 +52,19 @@ export default function RecipeDetailsPage(props: Readonly<RecipeDetailsPageProps
             return `${hours} hours ${minutes} minutes`;
         }
     };
+
+    function handleDelete() {
+        if (props.recipe !== undefined && props.recipe !== null) {
+            axios.delete(`/api/recipes/` + props.recipe.id)
+                .then(() => {
+                    props.fetchRecipes();
+                    navigate('/recipes');
+                })
+                .catch(error => {
+                    console.error("Error deleting recipe", error);
+                });
+        }
+    }
 
     return (
         <div className="recipe-details-container">
@@ -73,6 +88,11 @@ export default function RecipeDetailsPage(props: Readonly<RecipeDetailsPageProps
                     ))}
                 </ul>
             </div>
+            <Stack direction="row" spacing={2}>
+                <Button variant="outlined" onClick={handleDelete} startIcon={<DeleteIcon />}>
+                    Delete
+                </Button>
+            </Stack>
             <button className="back-button" onClick={() => navigate('/recipes')}>Back to Recipes</button>
         </div>
     );

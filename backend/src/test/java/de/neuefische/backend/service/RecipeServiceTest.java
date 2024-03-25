@@ -167,4 +167,44 @@ class RecipeServiceTest {
         verify(repo).save(any(Recipe.class));
         assertEquals(expected, actual);
     }
+
+    @Test
+    void deleteById_returnsString_whenRecipeSuccessfullyDeleted() {
+        //GIVEN
+        String id = "1";
+        PreparationTime preparationTime = new PreparationTime(0, 30);
+        TotalTime totalTime = new TotalTime(1, 15);
+        List<RecipeIngredients> recipeIngredients = new ArrayList<>();
+        recipeIngredients.add(new RecipeIngredients("name test", "quantity 1"));
+        recipeIngredients.add(new RecipeIngredients("name test 2", "quantity 2"));
+        Recipe recipe = new Recipe("1",
+                "Test Recipe",
+                "Test Description",
+                "Test Instructions",
+                "Test Author",
+                "Test Origin",
+                List.of(RecipeType.VEGETARIAN, RecipeType.WITH_MEAT),
+                preparationTime,
+                totalTime,
+                List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
+                RecipeDifficulty.EASY,
+                recipeIngredients
+        );
+        String expected = "Recipe with ID: " + id + " has been deleted successfully.";
+        //WHEN
+        when(repo.findById(id)).thenReturn(Optional.of(recipe));
+        String actual = recipeService.deleteById(id);
+        //THEN
+        verify(repo).findById(id);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteRecipeById_whenRecipeNotFound() {
+        // GIVEN
+        String id = "1";
+        // THEN
+        assertThrows(RecipeNotFoundException.class, () -> recipeService.deleteById(id));
+    }
 }

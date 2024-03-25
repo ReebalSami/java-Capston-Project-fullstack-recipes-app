@@ -48,4 +48,16 @@ public class RecipeService {
         return new RecipeNormalized(temp);
     }
 
+    public Recipe findRecipeById(String id) {
+        return repo
+                .findById(id)
+                .orElseThrow(() -> new RecipeNotFoundException("Recipe with ID: " + id + " not found."));
+    }
+
+    public String deleteById(String id) {
+        Recipe recipe = findRecipeById(id);
+        repo.delete(recipe);
+        return "Recipe with ID: " + id + " has been deleted successfully.";
+    }
 }
+
