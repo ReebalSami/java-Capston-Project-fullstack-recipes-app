@@ -5,6 +5,8 @@ import {Recipe, RecipeIngredients} from "../types/Recipe.ts";
 import "./RecipeDetailsPage.css";
 import {Button, Stack} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
 
 type RecipeDetailsPageProps = {
     recipe: Recipe | null | undefined;
@@ -65,6 +67,11 @@ export default function RecipeDetailsPage(props: Readonly<RecipeDetailsPageProps
                 });
         }
     }
+    function handleEdit() {
+        if (props.recipe !== undefined && props.recipe !== null) {
+            navigate(`/recipes/` + props.recipe.id + `/edit`);
+        }
+    }
 
     return (
         <div className="recipe-details-container">
@@ -91,6 +98,9 @@ export default function RecipeDetailsPage(props: Readonly<RecipeDetailsPageProps
             <Stack direction="row" spacing={2}>
                 <Button variant="outlined" onClick={handleDelete} startIcon={<DeleteIcon />}>
                     Delete
+                </Button>
+                <Button variant="contained" onClick={handleEdit} endIcon={<EditIcon />}>
+                    Edit
                 </Button>
             </Stack>
             <button className="back-button" onClick={() => navigate('/recipes')}>Back to Recipes</button>
