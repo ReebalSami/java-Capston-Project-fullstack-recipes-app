@@ -32,12 +32,12 @@ public class OpenAiController {
                 .map(Enum::name)
                 .collect(Collectors.joining(", ", "'", "'"));
 
-        String q = "give me 3 recipes as json format only with these ingredients: " + ingredients + "The json should include the following attribute: name, description, instructions, author, origin, type, preparationTime, totalTime, category, difficulty and ingredients. " +
+        String q = "give me a recipe as json format only with these ingredients: " + ingredients + "The json should include the following attribute: name, description, instructions, author, origin, type, preparationTime, totalTime, category, difficulty and ingredients. " +
                 "categories should include one or more of the following for each Recipe: " + categories + ". " +
                 "types should include one or more of the following for each Recipe: " + types + ". " +
                 "difficulty should include one of the following for each Recipe: " + difficulty + ". " +
                 "PreparationTime and TotalTime should be in the format of {hours: 0, minutes: 0}. " +
-                "Ingredients should include the following attributes: name, amount, unit." +
+                "Ingredients should include the following attributes: name: Fettuccine, quantity: 300g." +
                 "Description should not be longer than 30 words." +
                 "Instructions should not be longer than 50 words.";
         return service.askQuestion(q);
