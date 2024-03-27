@@ -8,13 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatGptChoice {
-    /**
-     {
-     "message": {
-     "content": "This is a test!"
-     }
-     }
-     */
     private ChatGptMessage message;
 }
 

@@ -8,18 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatGptMessage {
-    /**
-     {
-     "messages":
-     [
-     {
-     "role": "user",
-     "content": "Say this is a test!"
-     }
-     ]
-     }
-     */
-
     private String role;
     private String content;
 

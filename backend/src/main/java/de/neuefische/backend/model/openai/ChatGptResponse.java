@@ -10,21 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatGptResponse {
-    /**
-     {
-
-     "choices":
-     [
-     {
-     "message": {
-     "role": "assistant",
-     "content": "This is a test!"
-     }
-     }
-     ]
-     }
-     */
-
     private List<ChatGptChoice> choices;
 
     public String getAnswer() {

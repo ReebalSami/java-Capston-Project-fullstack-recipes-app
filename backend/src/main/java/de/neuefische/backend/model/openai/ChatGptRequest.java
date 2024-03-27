@@ -11,15 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 
 public class ChatGptRequest {
-    /**
-     {
-     "model": "gpt-3.5-turbo",
-     "response_format": { "type": "json_object" },
-     "messages": [{"role": "user", "content": "Say this is a test!"}],
-
-     }
-     */
-
     private String model;
     private ResponseFormat response_format;
     private List<ChatGptMessage> messages;
