@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage.tsx";
 import RecipeDetailsPage from "./pages/RecipeDetailsPage.tsx";
 import AddRecipePage from "./pages/AddRecipePage.tsx";
 import EditRecipePage from "./pages/EditRecipePage.tsx";
+import GenerateRecipePage from "./pages/GenerateRecipePage.tsx";
 
 export default function App() {
     const [recipes, setRecipes] = useState<Recipe[] | null | undefined>(undefined);
@@ -45,6 +46,7 @@ export default function App() {
                 <Route path="/recipes/:id" element={<RecipeDetailsPage recipe={recipe} setRecipe={setRecipe} fetchRecipes={fetchRecipes}/>}/>
                 <Route path="/recipes/add" element={<AddRecipePage recipes={recipes} fetchRecipes={fetchRecipes}/>}/>
                 <Route path="/recipes/:id/edit" element={<EditRecipePage recipes={recipes} fetchRecipes={fetchRecipes}/>} />
+                <Route path="/recipes/generate" element={<GenerateRecipePage fetchRecipes={fetchRecipes}/>}/>
             </Routes>
         </Layout>
     )
