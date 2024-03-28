@@ -21,7 +21,6 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
     const [instructions, setInstructions] = useState(props.recipe.instructions);
     const [author, setAuthor] = useState(props.recipe.author);
     const [origin, setOrigin] = useState(props.recipe.origin);
-
     const [difficulty, setDifficulty] = useState(props.recipe.difficulty.toUpperCase());
     const [types, setTypes] = useState<string[]>(props.recipe.type);
     const [categories, setCategories] = useState<string[]>(props.recipe.category);
@@ -128,7 +127,6 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
             <form onSubmit={editThisItem}>
                 <label>
                     Name: <input type="text" value={name} onChange={handleNameChange} required/>
-
                 </label>
 
                 <label>
@@ -209,10 +207,8 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
                                   types={types} changeTypes={handleTypeChange}
                 />
 
-
                 <button type="submit">Save Changes</button>
                 <button onClick={() => props.recipe && navigate("/recipes/" + props.recipe.id)}>Cancel</button>
-
 
             </form>
             <br/>
