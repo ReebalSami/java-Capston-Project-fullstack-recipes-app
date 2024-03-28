@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import {alpha, styled} from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
@@ -47,29 +47,37 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Search() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [searchValue, setSearchValue] = useState<string>("");
 
     const toggleSearch = () => {
         setIsSearchOpen(!isSearchOpen);
     };
+    const handleSearchValue = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(e.target.value);
+    }
+    const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        navigate(`/recipes/search/${searchValue}`);
+    }
     const navigate = useNavigate();
 
     return (
         <SearchContainer>
+            <form onSubmit={handleOnSubmit}>
             <SearchIconWrapper>
                 <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
                 placeholder="Search"
                 inputProps={{ "aria-label": "search" }}
-                onClick={() => {
-                    toggleSearch();
-                    navigate("/recipes/search");
-                }}
-
+                onClick={toggleSearch}
+                onChange={handleSearchValue}
+                value={searchValue}
                 autoFocus={isSearchOpen}
                 onFocus={() => setIsSearchOpen(true)}
                 onBlur={() => setIsSearchOpen(false)}
             />
+            </form>
         </SearchContainer>
     );
 }

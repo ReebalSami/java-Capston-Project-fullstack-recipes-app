@@ -23,8 +23,8 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
     const [origin, setOrigin] = useState(props.recipe.origin);
 
     const [difficulty, setDifficulty] = useState(props.recipe.difficulty.toUpperCase());
-    const [types, setTypes] = useState<string[]>(props.recipe.type.map((type) => typeNormalizerMap[type as keyof typeof typeNormalizerMap]));
-    const [categories, setCategories] = useState<string[]>(props.recipe.category.map((category) => categoryNormalizerMap[category as keyof typeof categoryNormalizerMap]));
+    const [types, setTypes] = useState<string[]>(props.recipe.type);
+    const [categories, setCategories] = useState<string[]>(props.recipe.category);
     const [ingredients, setIngredients] = useState<RecipeIngredients[]>(props.recipe.ingredients);
     const [preparationTimeHours, setPreparationTimeHours] = useState(props.recipe.preparationTime.hours);
     const [preparationTimeMinutes, setPreparationTimeMinutes] = useState( props.recipe.preparationTime.minutes);
@@ -57,12 +57,16 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
     }
 
     function handleTypeChange(event: SelectChangeEvent<typeof types>) {
-        const value = event.target.value;
+        const{
+            target: {value},
+        } = event;
         setTypes(typeof value === 'string' ? value.split(',') : value,);
     }
 
     function handleCategoryChange(event: SelectChangeEvent<typeof categories>) {
-        const value = event.target.value;
+        const {
+            target: {value},
+        } = event;
         setCategories(typeof value === 'string' ? value.split(',') : value,);
     }
 

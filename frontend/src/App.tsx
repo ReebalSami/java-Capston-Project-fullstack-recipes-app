@@ -49,6 +49,7 @@ export default function App() {
                 {recipe && <Route path="/recipes/:id/edit" element={<EditRecipePage recipe={recipe} fetchRecipes={fetchRecipes}/>} />}
                 <Route path="/recipes/generate" element={<GenerateRecipePage fetchRecipes={fetchRecipes}/>}/>
                 <Route path="/recipes/search" element={<SearchAndFilterPage recipes={recipes} fetchRecipes={fetchRecipes}/>}/>
+                <Route path="/recipes/search/:searchValue" element={<SearchAndFilterPage recipes={recipes} fetchRecipes={fetchRecipes}/>}/>
             </Routes>
         </Layout>
     )
