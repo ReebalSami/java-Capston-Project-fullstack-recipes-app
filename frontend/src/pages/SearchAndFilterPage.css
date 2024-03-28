@@ -1,0 +1,14 @@
+.searchForm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.searchTextField {
+  flex-grow: 1;
+}
+.recipe-list {
+  display: flex;
+  gap: 10px;
+  flex-flow: row wrap;
+  padding: 0;
+}
