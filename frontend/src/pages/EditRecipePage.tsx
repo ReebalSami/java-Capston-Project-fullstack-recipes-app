@@ -1,6 +1,6 @@
 import './EditRecipePage.css';
 import {ChangeEvent, FormEvent, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {SelectChangeEvent} from "@mui/material";
 import axios from "axios";
 import {Recipe, RecipeIngredients} from "../types/Recipe.ts";
@@ -8,29 +8,27 @@ import MultipleCheckbox from "../utility_functions/MultipleCheckbox.tsx";
 import {categoryNormalizerMap, typeNormalizerMap} from "../utility_functions/recipeNormalizer.ts";
 
 export type EditRecipePageProps = {
-    recipes: Recipe[];
+    recipe: Recipe;
     fetchRecipes: () => void;
 };
 
+
 export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
-    const params = useParams();
     const navigate = useNavigate();
 
-    const recipe = props.recipes.find((recipe) => recipe.id === params.id);
-    const [name, setName] = useState(recipe ? recipe.name : '');
-    const [description, setDescription] = useState(recipe ? recipe.description : '');
-    const [instructions, setInstructions] = useState(recipe ? recipe.instructions : '');
-    const [author, setAuthor] = useState(recipe ? recipe.author : '');
-    const [origin, setOrigin] = useState(recipe ? recipe.origin : '');
-
-    const [difficulty, setDifficulty] = useState(recipe ? recipe.difficulty : "");
-    const [types, setTypes] = useState<string[]>(recipe && Array.isArray(recipe.type) ? recipe.type : []);
-    const [categories, setCategories] = useState<string[]>(recipe && Array.isArray(recipe.category) ? recipe.category : []);
-    const [ingredients, setIngredients] = useState<RecipeIngredients[]>(recipe && Array.isArray(recipe.ingredients) ? recipe.ingredients : []);
-    const [preparationTimeHours, setPreparationTimeHours] = useState(recipe ? recipe.preparationTime.hours : 0);
-    const [preparationTimeMinutes, setPreparationTimeMinutes] = useState(recipe ? recipe.preparationTime.minutes : 0);
-    const [totalTimeHours, setTotalTimeHours] = useState(recipe ? recipe.totalTime.hours : 0);
-    const [totalTimeMinutes, setTotalTimeMinutes] = useState(recipe ? recipe.totalTime.minutes : 0);
+    const [name, setName] = useState(props.recipe.name);
+    const [description, setDescription] = useState(props.recipe.description);
+    const [instructions, setInstructions] = useState(props.recipe.instructions);
+    const [author, setAuthor] = useState(props.recipe.author);
+    const [origin, setOrigin] = useState(props.recipe.origin);
+    const [difficulty, setDifficulty] = useState(props.recipe.difficulty.toUpperCase());
+    const [types, setTypes] = useState<string[]>(props.recipe.type);
+    const [categories, setCategories] = useState<string[]>(props.recipe.category);
+    const [ingredients, setIngredients] = useState<RecipeIngredients[]>(props.recipe.ingredients);
+    const [preparationTimeHours, setPreparationTimeHours] = useState(props.recipe.preparationTime.hours);
+    const [preparationTimeMinutes, setPreparationTimeMinutes] = useState( props.recipe.preparationTime.minutes);
+    const [totalTimeHours, setTotalTimeHours] = useState(props.recipe.totalTime.hours);
+    const [totalTimeMinutes, setTotalTimeMinutes] = useState(props.recipe.totalTime.minutes);
 
     function handleNameChange(event: ChangeEvent<HTMLInputElement>) {
         setName(event.target.value);
@@ -54,15 +52,20 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
 
     function handleDifficultyChange(event: ChangeEvent<HTMLSelectElement>) {
         setDifficulty(event.target.value);
+        console.log(event.target.value);
     }
 
     function handleTypeChange(event: SelectChangeEvent<typeof types>) {
-        const value = event.target.value;
+        const{
+            target: {value},
+        } = event;
         setTypes(typeof value === 'string' ? value.split(',') : value,);
     }
 
     function handleCategoryChange(event: SelectChangeEvent<typeof categories>) {
-        const value = event.target.value;
+        const {
+            target: {value},
+        } = event;
         setCategories(typeof value === 'string' ? value.split(',') : value,);
     }
 
@@ -91,8 +94,8 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
 
     function editThisItem(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        if (recipe !== undefined) {
-            axios.put("/api/recipes/" + recipe.id, {
+        if (props.recipe !== undefined) {
+            axios.put("/api/recipes/" + props.recipe.id, {
                 name: name,
                 description: description,
                 instructions: instructions,
@@ -113,7 +116,7 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
             })
                 .then(() => {
                     props.fetchRecipes();
-                    navigate("/recipes/" + recipe.id);
+                    navigate("/recipes/" + props.recipe.id);
                 });
         }
     }
@@ -124,7 +127,6 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
             <form onSubmit={editThisItem}>
                 <label>
                     Name: <input type="text" value={name} onChange={handleNameChange} required/>
-
                 </label>
 
                 <label>
@@ -205,10 +207,8 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
                                   types={types} changeTypes={handleTypeChange}
                 />
 
-
                 <button type="submit">Save Changes</button>
-                <button onClick={() => recipe && navigate("/recipes/" + recipe.id)}>Cancel</button>
-
+                <button onClick={() => props.recipe && navigate("/recipes/" + props.recipe.id)}>Cancel</button>
 
             </form>
             <br/>

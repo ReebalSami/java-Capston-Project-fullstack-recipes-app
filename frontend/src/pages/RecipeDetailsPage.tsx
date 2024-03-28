@@ -32,10 +32,8 @@ export default function RecipeDetailsPage(props: Readonly<RecipeDetailsPageProps
 
     useEffect(() => {
         fetchRecipeById();
-
-        return () => {
-        };
-    }, [fetchRecipeById]);
+        // eslint-disable-next-line
+    }, [id]);
 
     if (props.recipe === null) {
         return <Navigate to="/recipes" />;
