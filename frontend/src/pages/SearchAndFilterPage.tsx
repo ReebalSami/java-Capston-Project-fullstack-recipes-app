@@ -6,13 +6,13 @@ import {useParams} from "react-router-dom";
 
 type SearchAndFilterPageProps = {
     recipes: Recipe[];
-    fetchRecipes: () => void;
 }
+
 export default function SearchAndFilterPage(props: Readonly<SearchAndFilterPageProps>) {
     const params = useParams();
     const searchTerm = params.searchValue;
 
-    const [searchValue, setSearchValue] = useState<string>(searchTerm?searchTerm:"");
+    const [searchValue, setSearchValue] = useState<string>(searchTerm ?? "");
     const [searchCategory, setSearchCategory] = useState<string>("");
     const [searchType, setSearchType] = useState<string>("");
 
@@ -40,50 +40,40 @@ export default function SearchAndFilterPage(props: Readonly<SearchAndFilterPageP
         return 0;
     });
 
-console.log(searchValue)
-
     useEffect(() => {
-        if (searchTerm){
-            setSearchValue(searchTerm);
-        }
+        setSearchValue(searchTerm ?? "");
     }, [searchTerm]);
 
-
-    const filteredRecipes = props.recipes.filter(
-        (recipe) => {
-            console.log(searchValue)
-            console.log(recipe)
-            recipe.name.toLowerCase().includes(searchValue.toLowerCase())
-            /*recipe.category.toString().includes(searchCategory) ||
-            recipe.type.toString().includes(searchType)*/
-        }
-    );
-
+    const filteredRecipes = sortedRecipes.filter((recipe) => {
+        return recipe.name.toLowerCase().includes(searchValue.toLowerCase()) &&
+            recipe.category.toString().includes(searchCategory) &&
+            recipe.type.toString().includes(searchType)
+    })
 
     return (
         <>
-        <div className={"searchForm"}>
-            <Autocomplete
-                disablePortal
-                options={optionalCategories}
-                onInputChange={(_e, value) => setSearchCategory(value)}
-                sx={{m: 1, width: 300}}
-                renderInput={(params) => <TextField {...params} label="Choose Category" />}/>
-            <Autocomplete
-                disablePortal
-                options={optionalTypes}
-                onInputChange={(_e, value) => setSearchType(value)}
-                sx={{m: 1, width: 300}}
-                renderInput={(params) => <TextField {...params} label="Choose Type" />}/>
-        </div>
-        <div className="recipe-list">
-            <h2>Recipe List</h2>
-            <div className="recipes-container" style={{display: 'flex', flexWrap: 'wrap'}}>
-                {filteredRecipes.map((recipe) => (
-                    <RecipeCard key={recipe.id} recipe={recipe}/>
-                ))}
+            <div className={"searchForm"}>
+                <Autocomplete
+                    disablePortal
+                    options={optionalCategories}
+                    onInputChange={(_e, value) => setSearchCategory(value)}
+                    sx={{m: 1, width: 300}}
+                    renderInput={(params) => <TextField {...params} label="Choose Category"/>}/>
+                <Autocomplete
+                    disablePortal
+                    options={optionalTypes}
+                    onInputChange={(_e, value) => setSearchType(value)}
+                    sx={{m: 1, width: 300}}
+                    renderInput={(params) => <TextField {...params} label="Choose Type"/>}/>
             </div>
-        </div>
+            <div className="recipe-list">
+                <h2>Recipe List</h2>
+                <div className="recipes-container" style={{display: 'flex', flexWrap: 'wrap'}}>
+                    {filteredRecipes.map((recipe) => (
+                        <RecipeCard key={recipe.id} recipe={recipe}/>
+                    ))}
+                </div>
+            </div>
         </>
     )
 }

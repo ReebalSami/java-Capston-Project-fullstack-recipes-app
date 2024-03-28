@@ -250,7 +250,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                 <div>
                     <label htmlFor="ingredients">Ingredients:</label>
                     {formData.ingredients.map((ingredient, index) => (
-                        <div key={`${index}-${ingredient.name}`}>
+                        <div key={index}>
                             <label htmlFor={`ingredient-name-${index}`}>Ingredient Name:</label>
                             <input
                                 type="text"
