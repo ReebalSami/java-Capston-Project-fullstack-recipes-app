@@ -46,7 +46,7 @@ export default function App() {
                 <Route path="/recipes" element={<RecipesPage recipes={recipes}/>}/>
                 <Route path="/recipes/:id" element={<RecipeDetailsPage recipe={recipe} setRecipe={setRecipe} fetchRecipes={fetchRecipes}/>}/>
                 <Route path="/recipes/add" element={<AddRecipePage recipes={recipes} fetchRecipes={fetchRecipes}/>}/>
-                <Route path="/recipes/:id/edit" element={<EditRecipePage recipes={recipes} fetchRecipes={fetchRecipes}/>} />
+                {recipe && <Route path="/recipes/:id/edit" element={<EditRecipePage recipe={recipe} fetchRecipes={fetchRecipes}/>} />}
                 <Route path="/recipes/generate" element={<GenerateRecipePage fetchRecipes={fetchRecipes}/>}/>
                 <Route path="/recipes/search" element={<SearchAndFilterPage recipes={recipes} fetchRecipes={fetchRecipes}/>}/>
             </Routes>

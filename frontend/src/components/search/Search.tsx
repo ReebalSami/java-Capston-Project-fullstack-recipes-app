@@ -2,6 +2,7 @@ import {useState} from "react";
 import {alpha, styled} from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import {useNavigate} from "react-router-dom";
 
 const SearchContainer = styled("div")(({ theme }) => ({
     position: "relative",
@@ -50,6 +51,7 @@ export default function Search() {
     const toggleSearch = () => {
         setIsSearchOpen(!isSearchOpen);
     };
+    const navigate = useNavigate();
 
     return (
         <SearchContainer>
@@ -59,7 +61,11 @@ export default function Search() {
             <StyledInputBase
                 placeholder="Search"
                 inputProps={{ "aria-label": "search" }}
-                onClick={toggleSearch}
+                onClick={() => {
+                    toggleSearch();
+                    navigate("/recipes/search");
+                }}
+
                 autoFocus={isSearchOpen}
                 onFocus={() => setIsSearchOpen(true)}
                 onBlur={() => setIsSearchOpen(false)}
