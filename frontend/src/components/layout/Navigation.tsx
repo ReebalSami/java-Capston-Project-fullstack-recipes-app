@@ -1,8 +1,7 @@
 import "./Navigation.css";
 import {Link, useNavigate} from "react-router-dom";
 import React, {useState} from "react";
-import {PostAdd} from "@mui/icons-material";
-import {Button, Menu, MenuItem} from "@mui/material";
+import {Menu, MenuItem} from "@mui/material";
 
 export default function Navigation() {
     const[anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -10,7 +9,7 @@ export default function Navigation() {
     const navigate = useNavigate();
 
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
@@ -23,7 +22,7 @@ export default function Navigation() {
                 <li><Link to={"/"}>Home</Link></li>
                 <li><Link to={"/recipes"}>Recipes</Link></li>
                 <li className={"icon-place button"}>
-                    <Button onClick={handleClick} startIcon={<PostAdd/>}>Add Recipe</Button>
+                    <a href="#" onClick={handleClick}>Add Recipe</a>
                     <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
                         <MenuItem onClick={() => navigate("/recipes/add")}>manually</MenuItem>
                         <MenuItem onClick={() => navigate("/recipes/generate")}>generate with AI</MenuItem>
