@@ -11,15 +11,13 @@ import "./UserAction.css";
 
 type UserActionProps = {
     user: string | undefined | null
-
 }
+
 const LoggedOutSettings = ['Login', 'Sign Up'];
 const LoggedInSettings = ['Profile', 'Logout'];
 
-
 export default function UserAction(props: Readonly<UserActionProps>) {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -50,9 +48,7 @@ export default function UserAction(props: Readonly<UserActionProps>) {
         }
     };
 
-
     return (
-        <>
             <Container maxWidth="xl">
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                     <Box sx={{ flexGrow: 0 }}>
@@ -103,7 +99,5 @@ export default function UserAction(props: Readonly<UserActionProps>) {
                     }
                 </Box>
             </Container>
-        </>
-    )
-        ;
+    );
 }
