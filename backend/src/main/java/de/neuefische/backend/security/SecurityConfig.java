@@ -23,12 +23,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(a -> a
-                        .requestMatchers("/api/auth/me").authenticated()
-                        .requestMatchers("/api/chat").authenticated()
-                        .requestMatchers(HttpMethod.POST).authenticated()
-                        .requestMatchers(HttpMethod.DELETE).authenticated()
-                        .requestMatchers(HttpMethod.PUT).authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.GET, "/", "/api/recipes").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .exceptionHandling(e -> e
