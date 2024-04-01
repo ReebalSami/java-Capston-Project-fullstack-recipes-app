@@ -22,7 +22,7 @@ export default function Navigation() {
                 <li><Link to={"/"}>Home</Link></li>
                 <li><Link to={"/recipes"}>Recipes</Link></li>
                 <li className={"icon-place button"}>
-                    <a onClick={handleClickAddRecipe}>Add Recipe</a>
+                    <a href="#" onClick={handleClickAddRecipe}>Add Recipe</a>
                     <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
                         <MenuItem onClick={() => navigate("/recipes/add")}>manually</MenuItem>
                         <MenuItem onClick={() => navigate("/recipes/generate")}>generate with AI</MenuItem>
