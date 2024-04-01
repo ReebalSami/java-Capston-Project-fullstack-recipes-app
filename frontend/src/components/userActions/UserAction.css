@@ -1,11 +1,11 @@
-.user-actions {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
+.loginName{
+    font-size: 15px;
 }
 
-.user-actions a {
-    margin-left: 10px;
-    color: #fff;
-    text-decoration: none;
+.loginButtons{
+    background-color: #ffffff;
+}
+
+.loginButtons:hover{
+    background-color: #82b2c7;
 }

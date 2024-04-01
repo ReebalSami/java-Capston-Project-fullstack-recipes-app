@@ -4,12 +4,13 @@ import {ReactNode} from "react";
 
 type LayoutProps = {
     children: ReactNode;
+    user: string | undefined | null
 
 }
 export default function Layout(props: Readonly<LayoutProps>) {
     return (
         <>
-            <Header />
+            <Header user={props.user} />
             <div className={"layout"}>
                 <main>
                     {props.children}
