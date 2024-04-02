@@ -3,7 +3,10 @@ import "./Header.css";
 import UserAction from "../userActions/UserAction.tsx";
 import Search from "../search/Search.tsx";
 
-export default function Header() {
+type HeaderProps={
+    user:string | undefined | null
+}
+export default function Header(props: Readonly<HeaderProps>) {
 
     return (
         <header>
@@ -14,7 +17,7 @@ export default function Header() {
             <div className="header-right">
                 <Search/>
                 <div className="separator"></div>
-                <UserAction/>
+                <UserAction user={props.user}/>
             </div>
         </header>
     )

@@ -1,11 +1,7 @@
-.user-actions {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
+.greeting {
+    margin-left: 10px;
 }
 
-.user-actions a {
-    margin-left: 10px;
+.loginName {
     color: #fff;
-    text-decoration: none;
 }

@@ -10,10 +10,26 @@ import AddRecipePage from "./pages/AddRecipePage.tsx";
 import EditRecipePage from "./pages/EditRecipePage.tsx";
 import GenerateRecipePage from "./pages/GenerateRecipePage.tsx";
 import SearchAndFilterPage from "./pages/SearchAndFilterPage.tsx";
+import ProtectedRoutes from "./ProtectedRoutes.tsx";
 
 export default function App() {
     const [recipes, setRecipes] = useState<Recipe[] | null | undefined>(undefined);
     const [recipe, setRecipe] = useState<Recipe | null | undefined>(undefined);
+    const [user, setUser] = useState<string | undefined | null>(undefined);
+
+    useEffect(() => {
+        loadUser()
+    }, [])
+
+    const loadUser = () => {
+        axios.get('/api/auth/me')
+            .then(response => {
+                setUser(response.data)
+            })
+            .catch(() => {
+                setUser(null)
+            })
+    }
 
     function fetchRecipes() {
         axios.get("/api/recipes")
@@ -40,16 +56,18 @@ export default function App() {
     }
 
     return (
-        <Layout>
+        <Layout user={user}>
             <Routes>
                 <Route path={"/"} element={<HomePage recipes={recipes}/>}/>
-                <Route path="/recipes" element={<RecipesPage recipes={recipes}/>}/>
-                <Route path="/recipes/:id" element={<RecipeDetailsPage recipe={recipe} setRecipe={setRecipe} fetchRecipes={fetchRecipes}/>}/>
-                <Route path="/recipes/add" element={<AddRecipePage recipes={recipes} fetchRecipes={fetchRecipes}/>}/>
-                {recipe && <Route path="/recipes/:id/edit" element={<EditRecipePage recipe={recipe} fetchRecipes={fetchRecipes}/>} />}
-                <Route path="/recipes/generate" element={<GenerateRecipePage fetchRecipes={fetchRecipes}/>}/>
-                <Route path="/recipes/search" element={<SearchAndFilterPage recipes={recipes} fetchRecipes={fetchRecipes}/>}/>
-                <Route path="/recipes/search/:searchValue" element={<SearchAndFilterPage recipes={recipes} fetchRecipes={fetchRecipes}/>}/>
+                <Route element={<ProtectedRoutes user={user} />}>
+                    <Route path="/recipes" element={<RecipesPage recipes={recipes}/>}/>
+                    <Route path="/recipes/:id" element={<RecipeDetailsPage recipe={recipe} setRecipe={setRecipe} fetchRecipes={fetchRecipes}/>}/>
+                    <Route path="/recipes/add" element={<AddRecipePage recipes={recipes} fetchRecipes={fetchRecipes}/>}/>
+                    {recipe && <Route path="/recipes/:id/edit" element={<EditRecipePage recipe={recipe} fetchRecipes={fetchRecipes}/>} />}
+                    <Route path="/recipes/generate" element={<GenerateRecipePage fetchRecipes={fetchRecipes}/>}/>
+                    <Route path="/recipes/search" element={<SearchAndFilterPage recipes={recipes}/>}/>
+                    <Route path="/recipes/search/:searchValue" element={<SearchAndFilterPage recipes={recipes}/>}/>
+                </Route>
             </Routes>
         </Layout>
     )
