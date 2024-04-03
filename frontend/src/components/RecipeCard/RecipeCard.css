@@ -1,10 +1,12 @@
 .recipe-card {
     background-color: maroon;
-    border: 4px olive;
+    border: 4px solid olive;
     border-radius: 10px;
     padding: 10px;
     margin: 5px;
-    width: 200px;
+    width: calc(25% - 10px);
+    height: 200px;
+    box-sizing: border-box;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
     display: inline-block;

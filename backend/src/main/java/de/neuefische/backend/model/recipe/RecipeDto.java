@@ -1,6 +1,9 @@
 package de.neuefische.backend.model.recipe;
 
+import lombok.With;
+
 import java.util.List;
+@With
 public record RecipeDto(
         String name,
         String description,
@@ -12,7 +15,8 @@ public record RecipeDto(
         TotalTime totalTime,
         List<RecipeCategory> category,
         RecipeDifficulty difficulty,
-        List<RecipeIngredients> ingredients
+        List<RecipeIngredients> ingredients,
+        String imageUrl
 ) {
 
 }

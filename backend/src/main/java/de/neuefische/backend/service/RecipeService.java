@@ -1,5 +1,6 @@
 package de.neuefische.backend.service;
 
+import com.cloudinary.Cloudinary;
 import de.neuefische.backend.exception.RecipeNotFoundException;
 import de.neuefische.backend.model.recipe.Recipe;
 import de.neuefische.backend.model.recipe.RecipeDto;
@@ -7,13 +8,18 @@ import de.neuefische.backend.model.recipe.RecipeNormalized;
 import de.neuefische.backend.repository.RecipesRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class RecipeService {
     private final RecipesRepo repo;
+    private final Cloudinary cloudinary;
     String message = "Recipe with ID: ${id} not found.";
 
     public List<RecipeNormalized> getAllRecipes() {
@@ -26,6 +32,13 @@ public class RecipeService {
                 .findById(id).stream().map(RecipeNormalized::new)
                 .findFirst()
                 .orElseThrow(() -> new RecipeNotFoundException(message.replace("${id}", id)));
+    }
+
+    public String uploadImage(MultipartFile image) throws IOException {
+        File fileToUpload = File.createTempFile("file", null);
+        image.transferTo(fileToUpload);
+        Map response = cloudinary.uploader().upload(fileToUpload, Map.of());
+        return response.get("secure_url").toString();
     }
 
     public RecipeNormalized saveNewRecipe(RecipeDto recipeDto) {
@@ -41,7 +54,8 @@ public class RecipeService {
                 recipeDto.totalTime(),
                 recipeDto.category(),
                 recipeDto.difficulty(),
-                recipeDto.ingredients()
+                recipeDto.ingredients(),
+                recipeDto.imageUrl()
         ));
 
         return new RecipeNormalized(temp);
@@ -66,6 +80,7 @@ public class RecipeService {
         recipe.setCategory(recipeDto.category());
         recipe.setDifficulty(recipeDto.difficulty());
         recipe.setIngredients(recipeDto.ingredients());
+        recipe.setImageUrl(recipeDto.imageUrl());
         repo.save(recipe);
         return new RecipeNormalized(recipe);
     }

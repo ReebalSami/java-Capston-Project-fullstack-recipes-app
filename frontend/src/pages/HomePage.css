@@ -1,6 +1,11 @@
 .homepage-container {
-    overflow-y: auto;
-    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 996px;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 .homepage-image {
@@ -10,4 +15,5 @@
 
 h1, p {
     color: #333;
+
 }
