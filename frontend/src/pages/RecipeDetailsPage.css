@@ -1,5 +1,5 @@
 .recipe-details-container {
-    max-width: 800px;
+    max-width: 946px;
     margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
@@ -37,4 +37,11 @@
 
 .back-button:hover {
     background-color: #0056b3;
+}
+
+.recipe-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 20px;
 }
