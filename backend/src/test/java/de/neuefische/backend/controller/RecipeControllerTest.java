@@ -1,5 +1,7 @@
 package de.neuefische.backend.controller;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.Uploader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.neuefische.backend.exception.ErrorMessage;
 import de.neuefische.backend.model.recipe.*;
@@ -8,17 +10,25 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,7 +44,35 @@ class RecipeControllerTest {
     String message = "Recipe with ID: ${id} not found.";
     @Autowired
     private ObjectMapper objectmapper;
+    @MockBean
+    Cloudinary cloudinary;
+    Uploader uploader = mock(Uploader.class);
 
+    private final static String RECIPEBODY = """
+                                {
+                                    "name": "Test Recipe",
+                                    "description": "Test Description",
+                                    "instructions": "Test Instructions",
+                                    "author": "Test Author",
+                                    "origin": "Test Origin",
+                                    "type": ["VEGETARIAN", "WITH_MEAT"],
+                                    "preparationTime": {"hours": 0, "minutes": 30},
+                                    "totalTime": {"hours": 1, "minutes": 15},
+                                    "category": ["DINNER", "SIDE_DISH"],
+                                    "difficulty": "EASY",
+                                    "ingredients": [
+                                                        {
+                                                            "name": "name test",
+                                                            "quantity": "quantity 1"
+                                                        },
+                                                        {
+                                                            "name": "name test 2",
+                                                            "quantity": "quantity 2"
+                                                        }
+                                                    ],
+                                    "imageUrl": "imageUrl"
+                                }
+                                """;
     @Test
     void getAllRecipes_returnEmptyList_WhenCalledInitially() throws Exception {
         //GIVEN
@@ -64,7 +102,8 @@ class RecipeControllerTest {
                 totalTime,
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
-                recipeIngredients
+                recipeIngredients,
+                "imageUrl"
         );
         repo.save(recipe);
         //WHEN & THEN
@@ -93,7 +132,8 @@ class RecipeControllerTest {
                                                         "name": "name test 2",
                                                         "quantity": "quantity 2"
                                                     }
-                                                ]
+                                                ],
+                                "imageUrl": "imageUrl"
                             }
                         ]
 
@@ -120,7 +160,8 @@ class RecipeControllerTest {
                 totalTime,
                 List.of(RecipeCategory.BREAKFAST, RecipeCategory.LUNCH ,RecipeCategory.DINNER, RecipeCategory.SIDE_DISH, RecipeCategory.DESSERT, RecipeCategory.SNACK, RecipeCategory.DRINK, RecipeCategory.APPETIZER, RecipeCategory.SALAD, RecipeCategory.SOUP, RecipeCategory.MAIN_DISH, RecipeCategory.BAKING, RecipeCategory.OTHER),
                 RecipeDifficulty.HARD,
-                recipeIngredients
+                recipeIngredients,
+                "imageUrl"
         );
         repo.save(recipe);
         //WHEN & THEN
@@ -149,7 +190,8 @@ class RecipeControllerTest {
                                                         "name": "name test 2",
                                                         "quantity": "quantity 2"
                                                     }
-                                                ]
+                                                ],
+                                "imageUrl": "imageUrl"
                             }
                         ]
 
@@ -176,7 +218,8 @@ class RecipeControllerTest {
                 totalTime,
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
-                recipeIngredients
+                recipeIngredients,
+                "imageUrl"
         );
         repo.save(recipe);
         //WHEN & THEN
@@ -204,7 +247,8 @@ class RecipeControllerTest {
                                                     "name": "name test 2",
                                                     "quantity": "quantity 2"
                                                 }
-                                            ]
+                                            ],
+                            "imageUrl": "imageUrl"
                         }
                         """))
                 .andReturn();
@@ -221,38 +265,17 @@ class RecipeControllerTest {
     }
 
     @Test
-    void saveNewRecipe_returnsRecipeWithIdNotEmpty_whenWithRequestBodyCalled() throws Exception {
+    void saveNewRecipe_returnsRecipeWithIdNotEmpty_whenWithMultipartRequestCalled() throws Exception {
         //GIVEN
-        String requestBody = """
-                {
-                    "name": "Test Recipe",
-                    "description": "Test Description",
-                    "instructions": "Test Instructions",
-                    "author": "Test Author",
-                    "origin": "Test Origin",
-                    "type": ["VEGETARIAN", "WITH_MEAT"],
-                    "preparationTime": {"hours": 0, "minutes": 30},
-                    "totalTime": {"hours": 1, "minutes": 15},
-                    "category": ["DINNER", "SIDE_DISH"],
-                    "difficulty": "EASY",
-                    "ingredients": [
-                                        {
-                                            "name": "name test",
-                                            "quantity": "quantity 1"
-                                        },
-                                        {
-                                            "name": "name test 2",
-                                            "quantity": "quantity 2"
-                                        }
-                                    ]
-                }
-                """;
-        //WHEN & THEN
-        mvc.perform(MockMvcRequestBuilders.post("/api/recipes")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
+        when(cloudinary.uploader()).thenReturn(uploader);
+        when(uploader.upload(any(), anyMap())).thenReturn(Map.of("secure_url", "testUrl"));
+
+        MockMultipartFile mockFile = new MockMultipartFile("file", "content".getBytes(StandardCharsets.UTF_8));
+        MockMultipartFile mockRecipe = new MockMultipartFile("recipe", "testRecipe", "application/json", RECIPEBODY.getBytes(StandardCharsets.UTF_8));
+        mvc.perform(multipart("/api/recipes")
+                        .file(mockFile)
+                        .file(mockRecipe))
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
                 .andExpect(content().json("""
                         {
                             "name": "Test Recipe",
@@ -274,11 +297,12 @@ class RecipeControllerTest {
                                                     "name": "name test 2",
                                                     "quantity": "quantity 2"
                                                 }
-                                            ]
+                                            ],
+                            "imageUrl": "testUrl"
                         }
-                        """))
-                .andReturn();
-    }
+                        """));
+}
+
 
     @Test
     void updateRecipeById_returnsUpdatedRecipe_whenCalledWithChanges() throws Exception {
@@ -299,7 +323,8 @@ class RecipeControllerTest {
                 totalTime,
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
-                recipeIngredients
+                recipeIngredients,
+                "imageUrl"
         );
         repo.save(recipe);
         String requestBody = """
@@ -323,7 +348,8 @@ class RecipeControllerTest {
                                             "name": "name test 6",
                                             "quantity": "quantity 30"
                                         }
-                                    ]
+                                    ],
+                    "imageUrl": "imageUrl"
                 }
                 """;
         //WHEN & THEN
@@ -354,7 +380,8 @@ class RecipeControllerTest {
                                                         "quantity": "quantity 30"
                                                     }
                                                         
-                                                ]
+                                                ],
+                                "imageUrl": "imageUrl"
                         }
                                                 
                                              """))
@@ -382,7 +409,8 @@ class RecipeControllerTest {
                 totalTime,
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
-                recipeIngredients
+                recipeIngredients,
+                "imageUrl"
         );
         repo.save(recipe);
         String message = "Recipe with ID: 1 has been deleted successfully.";

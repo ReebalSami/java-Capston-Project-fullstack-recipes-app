@@ -1,11 +1,13 @@
 import axios from "axios";
-import {Recipe} from "../types/Recipe";
 
-export const addRecipeToLibrary = async (formData: Recipe, fetchData: () => void): Promise<void> => {
+
+export const addRecipeToLibrary = async (formData: FormData, fetchData: () => void): Promise<void> => {
     try {
-        await axios.post('/api/recipes', formData);
+
+        await axios.post('/api/recipes', formData, {headers: {'Content-Type': 'multipart/form-data'}});
+
         fetchData();
-        alert(`Recipe "${formData.name}" added.`);
+        alert("Recipe " + formData.get("recipe") +  " added.");
     } catch (error) {
         console.error('Error submitting form:', error);
     }

@@ -10,7 +10,7 @@ type AddRecipePageProps = {
 }
 
 export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
-    const [formData, setFormData] = useState<Recipe>({
+    const [recipe, setRecipe] = useState<Recipe>({
         name: "",
         description: "",
         instructions: "",
@@ -21,12 +21,18 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
         totalTime: {hours: 0, minutes: 0},
         category: [],
         difficulty: "",
-        ingredients: [{name: "", quantity: ""}]
+        ingredients: [{name: "", quantity: ""}],
+        imageUrl: ""
     });
+    const [image, setImage] = useState<File>();
+/*    const [formData, setFormData] = useState({
+        file: null,
+        recipe: {}
+    });*/
 
     const [error, setError] = useState(false);
     const changeFormValue = (key: string, value: RecipeFormPrimitiveInputValue) => {
-        setFormData((prevData) => ({
+        setRecipe((prevData) => ({
             ...prevData, //...spread operator
             [key]: value,
         }));
@@ -52,7 +58,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
     const handleTimeInput = (key: string, hourInputName: string, minuteInputName: string) => {
         const hours = getFormElementValue(hourInputName);
         const minutes = getFormElementValue(minuteInputName);
-        setFormData((prevData) => ({
+        setRecipe((prevData) => ({
             ...prevData,
             [key]: {hours, minutes},
         }));
@@ -65,26 +71,26 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
 
     const handleChangeIngredients = (event: ChangeEvent<HTMLInputElement>, index: number, fieldName: 'name' | 'quantity') => {
         const {value} = event.target;
-        const newIngredients = [...formData.ingredients];
+        const newIngredients = [...recipe.ingredients];
         newIngredients[index][fieldName] = value;
 
-        setFormData((prevData) => ({
+        setRecipe((prevData) => ({
             ...prevData,
             ingredients: newIngredients,
         }));
     };
 
     const handleAddIngredient = () => {
-        setFormData((prevData) => ({
+        setRecipe((prevData) => ({
             ...prevData,
             ingredients: [...prevData.ingredients, {name: "", quantity: ""}],
         }));
     };
 
     const handleDeleteIngredient = (index: number) => {
-        const newIngredients = [...formData.ingredients];
+        const newIngredients = [...recipe.ingredients];
         newIngredients.splice(index, 1);
-        setFormData((prevData) => ({
+        setRecipe((prevData) => ({
             ...prevData,
             ingredients: newIngredients,
         }));
@@ -93,27 +99,26 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const matchingRecipe = props.recipes.find(recipe => recipe.name === formData.name);
+        const matchingRecipe = props.recipes.find(currentRecipe => currentRecipe.name === recipe.name);
         if (matchingRecipe) {
             setError(true);
             return;
         }
-        await addRecipeToLibrary(formData, props.fetchRecipes);
-        setFormData({
-            name: "",
-            description: "",
-            instructions: "",
-            author: "",
-            origin: "",
-            type: [],
-            preparationTime: {hours: 0, minutes: 0},
-            totalTime: {hours: 0, minutes: 0},
-            category: [],
-            difficulty: "",
-            ingredients: [{name: "", quantity: ""}]
-        });
+        const formDataWithImage = new FormData();
+        formDataWithImage.append("recipe",new Blob([JSON.stringify(recipe)], {'type': "application/json"}));
+
+        if (image) {
+            formDataWithImage.append("file", image);
+        }
+
+        await addRecipeToLibrary(formDataWithImage, props.fetchRecipes);
     };
 
+    const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            setImage(e.target.files[0]);
+        }
+    }
     return (
         <div className={"addRecipePage"}>
             <h1>Add Recipe</h1>
@@ -123,21 +128,31 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     type="text"
                     id="name"
                     name="name"
-                    value={formData.name}
+                    value={recipe.name}
                     onChange={handleChangeEvent.bind(null, 'string', 'name')}
                 />
+                <label htmlFor={"image"}>Image:</label>
+                <input
+                    type={"file"}
+                    id={"image"}
+                    name={"image"}
+                    onChange={onImageChange}
+                />
+                <img src={image ? URL.createObjectURL(image) : ""} alt={"Recipe"} className={"recipe-image"}/>
+
+
                 <label htmlFor="description">Description:</label>
                 <textarea
                     id="description"
                     name="description"
-                    value={formData.description}
+                    value={recipe.description}
                     onChange={handleChangeEvent.bind(null, "string", "description")}
                 />
                 <label htmlFor="instructions">Instructions:</label>
                 <textarea
                     id="instructions"
                     name="instructions"
-                    value={formData.instructions}
+                    value={recipe.instructions}
                     onChange={handleChangeEvent.bind(null, "string", "instructions")}
                 />
                 <label htmlFor="author">Author:</label>
@@ -145,7 +160,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     type="text"
                     id="author"
                     name="author"
-                    value={formData.author}
+                    value={recipe.author}
                     onChange={handleChangeEvent.bind(null, 'string', 'author')}
                 />
                 <label htmlFor="origin">Origin:</label>
@@ -153,14 +168,14 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     type="text"
                     id="origin"
                     name="origin"
-                    value={formData.origin}
+                    value={recipe.origin}
                     onChange={handleChangeEvent.bind(null, 'string', 'origin')}
                 />
                 <label htmlFor="hours">Preparation Time (hours):</label>
                 <select
                     id="hours"
                     name="preparationTimeHours"
-                    value={formData.preparationTime.hours}
+                    value={recipe.preparationTime.hours}
                     onChange={handleTimeInput.bind(null, 'preparationTime', 'preparationTimeHours', 'preparationTimeMinutes')}
                 >
                     {[...Array(24).keys()].map((hour) => (
@@ -171,7 +186,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                 <select
                     id="minutes"
                     name="preparationTimeMinutes"
-                    value={formData.preparationTime.minutes}
+                    value={recipe.preparationTime.minutes}
                     onChange={handleTimeInput.bind(null, 'preparationTime', 'preparationTimeHours', 'preparationTimeMinutes')}
                 >
                     {[...Array(60).keys()].map((minute) => (
@@ -182,7 +197,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                 <select
                     id="totalTimeHours"
                     name="totalTimeHours"
-                    value={formData.totalTime.hours}
+                    value={recipe.totalTime.hours}
                     onChange={handleTimeInput.bind(null, 'totalTime', 'totalTimeHours', 'totalTimeMinutes')}
                 >
                     {[...Array(24).keys()].map((hour) => (
@@ -193,7 +208,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                 <select
                     id="totalTimeMinutes"
                     name="totalTimeMinutes"
-                    value={formData.totalTime.minutes}
+                    value={recipe.totalTime.minutes}
                     onChange={handleTimeInput.bind(null, 'totalTime', 'totalTimeHours', 'totalTimeMinutes')}
                 >
                     {[...Array(60).keys()].map((minute) => (
@@ -204,7 +219,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                 <select
                     id="type"
                     name="type"
-                    value={formData.type}
+                    value={recipe.type}
                     onChange={handleChangeEvent.bind(null, 'array', 'type')}
                 >
                     <option value="VEGAN">Vegan</option>
@@ -219,7 +234,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                 <select
                     id="category"
                     name="category"
-                    value={formData.category}
+                    value={recipe.category}
                     onChange={handleChangeEvent.bind(null, 'array', 'category')}
                 >
                     <option value="BREAKFAST">Breakfast</option>
@@ -240,7 +255,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                 <select
                     id="difficulty"
                     name="difficulty"
-                    value={formData.difficulty}
+                    value={recipe.difficulty}
                     onChange={handleChangeEvent.bind(null, 'string', 'difficulty')}
                 >
                     <option value="EASY">Easy</option>
@@ -249,7 +264,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                 </select>
                 <div>
                     <label htmlFor="ingredients">Ingredients:</label>
-                    {formData.ingredients.map((ingredient, index) => (
+                    {recipe.ingredients.map((ingredient, index) => (
                         <div key={index}>
                             <label htmlFor={`ingredient-name-${index}`}>Ingredient Name:</label>
                             <input

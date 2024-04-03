@@ -75,6 +75,7 @@ export default function RecipeDetailsPage(props: Readonly<RecipeDetailsPageProps
         <div className="recipe-details-container">
             <h1 className="recipe-name">{props.recipe.name} Details</h1>
             <div className="recipe-details">
+                <img src={props.recipe.imageUrl} alt={props.recipe.name} className="recipe-image"/>
                 <p><strong>Description:</strong> {props.recipe.description}</p>
                 <p><strong>Instructions:</strong> {props.recipe.instructions}</p>
                 <p><strong>Author:</strong> {props.recipe.author}</p>

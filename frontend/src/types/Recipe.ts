@@ -11,6 +11,7 @@ export type Recipe = {
     category: CategoryList;
     difficulty: string;
     ingredients: RecipeIngredients[];
+    imageUrl: string;
 
 }
 export type RecipeTime = PreparationTime | TotalTime;

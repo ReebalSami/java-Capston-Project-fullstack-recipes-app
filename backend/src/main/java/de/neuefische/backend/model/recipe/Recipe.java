@@ -24,4 +24,5 @@ public class Recipe {
     private List<RecipeCategory> category;
     private RecipeDifficulty difficulty;
     private List<RecipeIngredients> ingredients;
+    private String imageUrl;
 }

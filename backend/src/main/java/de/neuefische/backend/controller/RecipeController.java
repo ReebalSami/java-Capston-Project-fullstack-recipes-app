@@ -6,7 +6,9 @@ import de.neuefische.backend.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,8 +28,13 @@ public class RecipeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RecipeNormalized saveNewRecipe(@RequestBody RecipeDto recipeDto) {
-        return service.saveNewRecipe(recipeDto);
+    public RecipeNormalized saveNewRecipe(@RequestPart(name = "file", required = false) MultipartFile image, @RequestPart(name = "recipe") RecipeDto recipeDto) throws IOException {
+        String imageUrl = "";
+        if (image != null) {
+            imageUrl = service.uploadImage(image);
+        }
+        RecipeDto recipeDtoWithImage = recipeDto.withImageUrl(imageUrl);
+        return service.saveNewRecipe(recipeDtoWithImage);
     }
 
     @PutMapping("/{id}")

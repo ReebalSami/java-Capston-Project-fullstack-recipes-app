@@ -22,6 +22,7 @@ public class RecipeNormalized {
     private List<String> category;
     private String difficulty;
     private List<RecipeIngredients> ingredients;
+    private String imageUrl;
 
     public RecipeNormalized(Recipe recipe) {
         this.id = recipe.getId();
@@ -36,5 +37,6 @@ public class RecipeNormalized {
         this.category = recipe.getCategory().stream().map(RecipeCategory::getNormalCategory).toList();
         this.difficulty = recipe.getDifficulty().getNormalDifficulty();
         this.ingredients = recipe.getIngredients();
+        this.imageUrl = recipe.getImageUrl();
     }
 }
