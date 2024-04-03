@@ -25,11 +25,6 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
         imageUrl: ""
     });
     const [image, setImage] = useState<File>();
-/*    const [formData, setFormData] = useState({
-        file: null,
-        recipe: {}
-    });*/
-
     const [error, setError] = useState(false);
     const changeFormValue = (key: string, value: RecipeFormPrimitiveInputValue) => {
         setRecipe((prevData) => ({
