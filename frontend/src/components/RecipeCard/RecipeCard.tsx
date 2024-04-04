@@ -24,8 +24,8 @@ export default function RecipeCard(props: Readonly<RecipeCardProps>) {
                 <CardMedia
                     component="img"
                     height="140"
-                    image= {props.recipe.imageUrl}
-                    alt= "https://res.cloudinary.com/dergdq6qs/image/upload/v1712181382/o5gm3luzvcnv0ifsznnw.jpg"
+                    image= {props.recipe.imageUrl? props.recipe.imageUrl : "public/images/cook_with_ai.jpeg"}
+                    alt= "Image was not found :("
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
