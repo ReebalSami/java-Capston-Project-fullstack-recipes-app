@@ -47,7 +47,10 @@ export default function GenerateRecipePage(props: Readonly<GenerateRecipePagePro
         }
     };
     const handleAddToLibrary = async (generatedRecipe: Recipe) => {
-        await addRecipeToLibrary(generatedRecipe, props.fetchRecipes);
+        const formDataWithImage = new FormData();
+        formDataWithImage.append("recipe",new Blob([JSON.stringify(generatedRecipe)], {'type': "application/json"}));
+
+        await addRecipeToLibrary(formDataWithImage, props.fetchRecipes);
         setGeneratedData((prevData) => (prevData ? prevData.filter(recipe => recipe !== generatedRecipe) : null));
     };
 
@@ -88,6 +91,7 @@ export default function GenerateRecipePage(props: Readonly<GenerateRecipePagePro
                                 justifyContent: 'space-between',
                             }}>
                                 <div>
+                                    <img src="../../public/images/mazza.jpeg" alt="Image was not found :(" style={{width: '100px', height: '100px'}}/>
                                     <strong>Name:</strong> {recipe.name} <br/>
                                     <strong>Description:</strong> {recipe.description} <br/>
                                     <strong>Instructions:</strong> {recipe.instructions} <br/>
@@ -116,8 +120,3 @@ export default function GenerateRecipePage(props: Readonly<GenerateRecipePagePro
         </div>
     );
 }
-
-
-
-
-
