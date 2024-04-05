@@ -1,21 +1,32 @@
 import './HomePage.css';
-import RecipesPage from "./RecipesPage.tsx";
-import {Recipe} from "../types/Recipe.ts";
+import {Recipe} from '../types/Recipe.ts';
+import RecipeCarousel from "../components/carousel/RecipeCarousel.tsx";
 
 type HomePageProps = {
     recipes: Recipe[];
 }
 
-export default function HomePage(props: Readonly<HomePageProps>){
+export default function HomePage(props: Readonly<HomePageProps>) {
+
     return (
         <div className="homepage-container">
             <img
                 src="/images/homepagePhoto.jpeg"
                 alt="Homepage"
-                className="homepage-image"
-            />
-            <RecipesPage recipes={props.recipes}/>
+                className="homepage-image"/>
+            <div className="carousel-section">
+                <h3>Latest Recipes</h3>
+                <div className="carousel">
+                    <RecipeCarousel recipes={props.recipes}/>
+                </div>
+            </div>
 
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
             <br/>
             <br/>
             <br/>
@@ -24,6 +35,3 @@ export default function HomePage(props: Readonly<HomePageProps>){
         </div>
     );
 }
-
-
-

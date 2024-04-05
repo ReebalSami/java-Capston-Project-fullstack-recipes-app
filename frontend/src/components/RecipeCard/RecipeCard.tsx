@@ -1,6 +1,11 @@
 import {Recipe} from "../../types/Recipe.ts";
 import {useNavigate} from "react-router-dom";
 import "./RecipeCard.css";
+import Card from "@mui/material/Card";
+import {Button, CardActionArea, CardActions} from "@mui/material";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 
 type RecipeCardProps = {
     recipe: Recipe
@@ -14,9 +19,33 @@ export default function RecipeCard(props: Readonly<RecipeCardProps>) {
     }
 
     return (
-        <button className="recipe-card" onClick={() => (goToRecipeDetailsPage(props.recipe.id))}>
-            <h3>{props.recipe.name}</h3>
-            <p>{props.recipe.description}</p>
-        </button>
-    )
+        <Card className="recipe-card">
+            <CardActionArea>
+                <CardMedia
+                    component="img"
+                    height="140"
+                    image= {props.recipe.imageUrl? props.recipe.imageUrl : "public/images/cook_with_ai.jpeg"}
+                    alt= "Image was not found :("
+                />
+                <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                        {props.recipe.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        Preparation time:
+                        {props.recipe.preparationTime.hours} h :
+                        {props.recipe.preparationTime.minutes} m <br/>
+                        Total time:
+                        {props.recipe.totalTime.hours} h :
+                        {props.recipe.totalTime.minutes} m
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+            <CardActions>
+                <Button onClick={() => (goToRecipeDetailsPage(props.recipe.id))}>
+                    learn more
+                </Button>
+            </CardActions>
+        </Card>
+    );
 }

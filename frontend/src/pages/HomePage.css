@@ -1,11 +1,6 @@
 .homepage-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: 996px;
-    margin: 0 auto;
-    overflow: hidden;
+    overflow-y: auto;
+    height: 100vh;
 }
 
 .homepage-image {
@@ -13,7 +8,21 @@
     height: auto;
 }
 
-h1, p {
-    color: #333;
-
+.carousel-section {
+    margin: 10px;
+    min-height: 275px;
+    max-height: 500px;
+    position: relative;
+    height: 100%;
+    line-height: normal;
 }
+
+.carousel {
+    display: grid;
+    overflow-x: auto;
+    white-space: nowrap;
+    justify-content: space-evenly;
+    align-items: stretch;
+    max-height: 400px;
+}
+
