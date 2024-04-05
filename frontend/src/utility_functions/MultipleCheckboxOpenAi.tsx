@@ -24,7 +24,6 @@ export default function MultipleCheckboxOpenAi(props: Readonly<MultipleCheckboxO
                         {...params}
                         label="Select Your Ingredients"
                         placeholder="Click or type to select ingredients..."
-                        required={true}
                     />
                 )}
             />
