@@ -1,8 +1,9 @@
-import {ChangeEvent, FormEvent, useState} from "react";
+import {FormEvent, SyntheticEvent, useState} from "react";
 import {Recipe, RecipeIngredientsList} from "../types/Recipe.ts";
 import axios from "axios";
 import {addRecipeToLibrary} from "../utility_functions/addRecipe.ts";
 import {v4 as uuidv4} from 'uuid';
+import MultipleCheckboxOpenAi from "../utility_functions/MultipleCheckboxOpenAi.tsx";
 
 
 const BACKEND_ENDPOINT = '/api/chat';
@@ -11,12 +12,14 @@ type GenerateRecipePageProps = {
     fetchRecipes: () => void;
 }
 export default function GenerateRecipePage(props: Readonly<GenerateRecipePageProps>) {
-    const [formData, setFormData] = useState<string>('');
     const [loading, setLoading] = useState(false);
     const [generatedData, setGeneratedData] = useState<Recipe[] | null>(null);
 
-    const handleDropdownChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setFormData(event.target.value);
+    const [ingredients, setIngredients] = useState<string[]>([]);
+    const ingredientsString = ingredients.join('+');
+
+    const handleDropdownChange = (_event: SyntheticEvent<Element, Event>, value: RecipeIngredientsList[]) => {
+        setIngredients(value);
     };
 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -27,19 +30,19 @@ export default function GenerateRecipePage(props: Readonly<GenerateRecipePagePro
             setLoading(true);
 
             const response = await axios.get(BACKEND_ENDPOINT, {
-                params: {ingredients: formData},
+                params: {ingredients: ingredientsString},
             });
 
             const recipes: Recipe[] = response.data.recipes;
 
             const recipesWithIngredient = recipes.map(recipe => ({
                 ...recipe,
-                RecipeIngredients: [...(recipe.ingredients || []), formData],
+                RecipeIngredients: [...(recipe.ingredients || []), ingredients],
             }));
 
             setGeneratedData(recipesWithIngredient);
-            setFormData('');
-            alert(`Recipes for "${formData}" are generated.`);
+            setIngredients([]);
+            alert(`Recipes for "${ingredients}" are generated.`);
         } catch (error) {
             console.error('Error submitting form:', error);
         } finally {
@@ -60,20 +63,7 @@ export default function GenerateRecipePage(props: Readonly<GenerateRecipePagePro
             <p>You will get three generated recipes you can then add to your library.</p>
             <form onSubmit={handleOnSubmit}>
                 <label htmlFor="ingredient">Choose an ingredient:</label>
-                <select
-                    id="ingredient"
-                    name="ingredient"
-                    value={formData}
-                    onChange={handleDropdownChange}
-                    required
-                >
-                    <option value="">Select an ingredient</option>
-                    {Object.values(RecipeIngredientsList).map((ingredient) => (
-                        <option key={ingredient} value={ingredient}>
-                            {ingredient}
-                        </option>
-                    ))}
-                </select>
+                <MultipleCheckboxOpenAi handleIngredients={handleDropdownChange}/>
                 <button type="submit" disabled={loading}>
                     {loading ? 'Generating recipes...' : 'Generate'}
                 </button>
