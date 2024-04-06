@@ -106,13 +106,13 @@ export default function GenerateRecipePage(props: Readonly<GenerateRecipePagePro
                                         <div className="recipe-type-category-container">
                                             <div className="recipe-type">
                                                 <strong>Type:</strong> {recipe.type.map(type => {
-                                                const formattedType = type.replace(/_/g, ' '); // Replace underscores with spaces
+                                                const formattedType = type.replace(/_/g, ' ');
                                                 return formattedType.charAt(0).toUpperCase() + formattedType.slice(1).toLowerCase();
                                             }).join(', ')}
                                             </div>
                                             <div className="recipe-category">
                                                 <strong>Category:</strong> {recipe.category.map(category => {
-                                                const formattedCategory = category.replace(/_/g, ' '); // Replace underscores with spaces
+                                                const formattedCategory = category.replace(/_/g, ' ');
                                                 return formattedCategory.charAt(0).toUpperCase() + formattedCategory.slice(1).toLowerCase();
                                             }).join(', ')}
                                             </div>
