@@ -1,4 +1,3 @@
-// GenerateRecipePage.tsx
 import {FormEvent, SyntheticEvent, useState} from "react";
 import {Recipe, RecipeIngredientsList} from "../types/Recipe.ts";
 import axios from "axios";
