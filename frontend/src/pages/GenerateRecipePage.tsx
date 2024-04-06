@@ -89,7 +89,7 @@ export default function GenerateRecipePage(props: Readonly<GenerateRecipePagePro
                                     <div className="recipe-header">
                                         <h3 className="recipe-name">{recipe.name}</h3>
                                         <p className="recipe-description"> {recipe.description}</p>
-                                        <img src="../../public/images/mazza.jpeg" alt="Image not found"
+                                        <img src={recipe.imageUrl} alt="Image not found"
                                              className="recipe-image"/>
                                     </div>
                                     <div className="recipe-specification-container">
@@ -169,6 +169,15 @@ export default function GenerateRecipePage(props: Readonly<GenerateRecipePagePro
                     </ul>
                 </div>
             )}
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </div>
     );
 }

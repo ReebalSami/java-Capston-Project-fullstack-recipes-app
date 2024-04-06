@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/recipes")
@@ -29,12 +30,18 @@ public class RecipeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RecipeNormalized saveNewRecipe(@RequestPart(name = "file", required = false) MultipartFile image, @RequestPart(name = "recipe") RecipeDto recipeDto) throws IOException {
-        String imageUrl = "";
-        if (image != null) {
-            imageUrl = service.uploadImage(image);
+        if (image != null){
+            String imageUrl = service.uploadImage(image);
+            RecipeDto recipeDtoWithImage = recipeDto.withImageUrl(imageUrl);
+            return service.saveNewRecipe(recipeDtoWithImage);
+        } else if (recipeDto.imageUrl() != null && !recipeDto.imageUrl().isEmpty()){
+            return service.saveNewRecipe(recipeDto);
+        } else if (Objects.equals(recipeDto.imageUrl(), "")){
+            String defaultImageUrl = "/images/mazza.jpeg";
+            RecipeDto recipeDtoWithoutImage = recipeDto.withImageUrl(defaultImageUrl);
+            return service.saveNewRecipe(recipeDtoWithoutImage);
         }
-        RecipeDto recipeDtoWithImage = recipeDto.withImageUrl(imageUrl);
-        return service.saveNewRecipe(recipeDtoWithImage);
+        return service.saveNewRecipe(recipeDto);
     }
 
     @PutMapping("/{id}")
