@@ -266,7 +266,7 @@ class RecipeControllerTest {
     }
 
     @Test
-    void saveNewRecipe_returnsRecipeWithIdNotEmpty_whenWithMultipartRequestCalled() throws Exception {
+    void saveNewRecipe_returnsRecipeWithIdNotEmptyAndWithImageUrl_whenWithMultipartRequestCalledAndImageUpload() throws Exception {
         //GIVEN
         when(cloudinary.uploader()).thenReturn(uploader);
         when(uploader.upload(any(), anyMap())).thenReturn(Map.of("secure_url", "testUrl"));
@@ -304,6 +304,41 @@ class RecipeControllerTest {
                         }
                         """));
 }
+
+    @Test
+    void saveNewRecipe_returnsRecipeWithIdNotEmptyAndDefaultImageUrl_whenWithMultipartRequestCalledWithoutImage() throws Exception {
+        //GIVEN
+        MockMultipartFile mockRecipe = new MockMultipartFile("recipe", "testRecipe", "application/json", RECIPEBODY.getBytes(StandardCharsets.UTF_8));
+        mvc.perform(multipart("/api/recipes")
+                        .file(mockRecipe))
+                .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty())
+                .andExpect(content().json("""
+                        {
+                            "name": "Test Recipe",
+                            "description": "Test Description",
+                            "instructions": "Test Instructions",
+                            "author": "Test Author",
+                            "origin": "Test Origin",
+                            "type": ["Vegetarian", "With Meat"],
+                            "preparationTime": {"hours": 0, "minutes": 30},
+                            "totalTime": {"hours": 1, "minutes": 15},
+                            "category": ["Dinner", "Side Dish"],
+                            "difficulty": "Easy",
+                            "ingredients": [
+                                                {
+                                                    "name": "name test",
+                                                    "quantity": "quantity 1"
+                                                },
+                                                {
+                                                    "name": "name test 2",
+                                                    "quantity": "quantity 2"
+                                                }
+                                            ],
+                            "imageUrl": "imageUrl"
+                        }
+                        """));
+    }
 
 
     @Test
