@@ -80,10 +80,13 @@ export default function RecipeDetailsPage(props: Readonly<RecipeDetailsPageProps
                 <p><strong>Instructions:</strong> {props.recipe.instructions}</p>
                 <p><strong>Author:</strong> {props.recipe.author}</p>
                 <p><strong>Origin:</strong> {props.recipe.origin}</p>
-                <p><strong>Type:</strong> {props.recipe.type}</p>
-                <p><strong>Preparation Time:</strong> {formatTime(props.recipe.preparationTime.hours, props.recipe.preparationTime.minutes)}</p>
-                <p><strong>Total Time:</strong> {formatTime(props.recipe.totalTime.hours, props.recipe.totalTime.minutes)}</p>
-                <p><strong>Category:</strong> {props.recipe.category}</p>
+                <p><strong>Type:</strong> {props.recipe.type.join(', ')}</p>
+                <p><strong>Preparation
+                    Time:</strong> {formatTime(props.recipe.preparationTime.hours, props.recipe.preparationTime.minutes)}
+                </p>
+                <p><strong>Total
+                    Time:</strong> {formatTime(props.recipe.totalTime.hours, props.recipe.totalTime.minutes)}</p>
+                <p><strong>Category:</strong> {props.recipe.category.join(', ')}</p>
                 <p><strong>Difficulty:</strong> {props.recipe.difficulty}</p>
                 <p><strong>Ingredients:</strong></p>
                 <ul className="ingredient-list">
@@ -95,14 +98,20 @@ export default function RecipeDetailsPage(props: Readonly<RecipeDetailsPageProps
                 </ul>
             </div>
             <Stack direction="row" spacing={2}>
-                <Button variant="outlined" onClick={handleDelete} startIcon={<DeleteIcon />}>
+                <Button variant="outlined" onClick={handleDelete} startIcon={<DeleteIcon/>}>
                     Delete
                 </Button>
-                <Button variant="contained" onClick={handleEdit} endIcon={<EditIcon />}>
+                <Button variant="contained" onClick={handleEdit} endIcon={<EditIcon/>}>
                     Edit
                 </Button>
             </Stack>
             <button className="back-button" onClick={() => navigate('/recipes')}>Back to Recipes</button>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </div>
+
     );
 }
