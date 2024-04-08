@@ -1,8 +1,12 @@
-import {ChangeEvent, FormEvent, useState} from "react";
+import {FormEvent, SyntheticEvent, useState} from "react";
 import {Recipe, RecipeIngredientsList} from "../types/Recipe.ts";
 import axios from "axios";
 import {addRecipeToLibrary} from "../utility_functions/addRecipe.ts";
 import {v4 as uuidv4} from 'uuid';
+import MultipleCheckboxOpenAi from "../utility_functions/MultipleCheckboxOpenAi.tsx";
+import "./GenerateRecipePage.css";
+import BlenderOutlinedIcon from '@mui/icons-material/BlenderOutlined';
+import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
 
 
 const BACKEND_ENDPOINT = '/api/chat';
@@ -10,114 +14,169 @@ const BACKEND_ENDPOINT = '/api/chat';
 type GenerateRecipePageProps = {
     fetchRecipes: () => void;
 }
+
 export default function GenerateRecipePage(props: Readonly<GenerateRecipePageProps>) {
-    const [formData, setFormData] = useState<string>('');
     const [loading, setLoading] = useState(false);
     const [generatedData, setGeneratedData] = useState<Recipe[] | null>(null);
+    const [ingredients, setIngredients] = useState<string[]>([]);
+    const ingredientsString = ingredients.join('+');
 
-    const handleDropdownChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setFormData(event.target.value);
+    const handleDropdownChange = (_event: SyntheticEvent<Element, Event>, value: RecipeIngredientsList[]) => {
+        setIngredients(value);
     };
 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (ingredients.length < 3) {
+            alert('Please select at least three ingredients.');
+            return;
+        }
 
         try {
             setGeneratedData(null);
             setLoading(true);
 
             const response = await axios.get(BACKEND_ENDPOINT, {
-                params: {ingredients: formData},
+                params: { ingredients: ingredientsString },
             });
 
             const recipes: Recipe[] = response.data.recipes;
 
             const recipesWithIngredient = recipes.map(recipe => ({
                 ...recipe,
-                RecipeIngredients: [...(recipe.ingredients || []), formData],
+                RecipeIngredients: [...(recipe.ingredients || []), ingredients],
             }));
 
             setGeneratedData(recipesWithIngredient);
-            setFormData('');
-            alert(`Recipes for "${formData}" are generated.`);
+            setIngredients([]);
+            alert(`Recipes for "${ingredients}" are generated.`);
         } catch (error) {
             console.error('Error submitting form:', error);
         } finally {
             setLoading(false);
         }
     };
+
     const handleAddToLibrary = async (generatedRecipe: Recipe) => {
-        await addRecipeToLibrary(generatedRecipe, props.fetchRecipes);
+        const formDataWithImage = new FormData();
+        formDataWithImage.append("recipe", new Blob([JSON.stringify(generatedRecipe)], { 'type': "application/json" }));
+
+        await addRecipeToLibrary(formDataWithImage, props.fetchRecipes);
         setGeneratedData((prevData) => (prevData ? prevData.filter(recipe => recipe !== generatedRecipe) : null));
     };
 
     return (
-        <div className="container">
-            <h2>Which ingredient do you want to generate recipes for:</h2>
-            <p>You will get three generated recipes you can then add to your library.</p>
-            <form onSubmit={handleOnSubmit}>
-                <label htmlFor="ingredient">Choose an ingredient:</label>
-                <select
-                    id="ingredient"
-                    name="ingredient"
-                    value={formData}
-                    onChange={handleDropdownChange}
-                    required
-                >
-                    <option value="">Select an ingredient</option>
-                    {Object.values(RecipeIngredientsList).map((ingredient) => (
-                        <option key={ingredient} value={ingredient}>
-                            {ingredient}
-                        </option>
-                    ))}
-                </select>
-                <button type="submit" disabled={loading}>
+        <div className="recipe-generator-container">
+            <h2 className="title">Cooking Magic Generator</h2>
+            <p className="description">List your ingredients and let the culinary wizardry begin! You will get three recipes, you can then add to your library.</p>
+            <form onSubmit={handleOnSubmit} className="recipe-form">
+                <label htmlFor="ingredient" className="form-label">Choose what you have in the fridge:</label>
+                <MultipleCheckboxOpenAi handleIngredients={handleDropdownChange} />
+                <button type="submit" disabled={loading} className="form-button">
                     {loading ? 'Generating recipes...' : 'Generate'}
                 </button>
             </form>
-            {loading && <p>Generating recipes...</p>}
+            {loading && <p className="loading">Generating recipes...</p>}
             {generatedData && (
                 <div>
-                    <h3>Generated Recipes:</h3>
-                    <ul>
+                    <h3 className="generated-title">Generated Recipes:</h3>
+                    <ul className="recipe-list">
                         {generatedData.map((recipe) => (
-                            <li key={uuidv4()} style={{
-                                marginBottom: '15px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                            }}>
-                                <div>
-                                    <strong>Name:</strong> {recipe.name} <br/>
-                                    <strong>Description:</strong> {recipe.description} <br/>
-                                    <strong>Instructions:</strong> {recipe.instructions} <br/>
-                                    <strong>Author:</strong> {recipe.author} <br/>
-                                    <strong>Origin:</strong> {recipe.origin} <br/>
-                                    <strong>Type:</strong> {recipe.type.join(', ')} <br/>
-                                    <strong>Preparation
-                                        Time:</strong> {recipe.preparationTime.hours} hours {recipe.preparationTime.minutes} minutes <br/>
-                                    <strong>Total
-                                        Time:</strong> {recipe.totalTime.hours} hours {recipe.totalTime.minutes} minutes <br/>
-                                    <strong>Category:</strong> {recipe.category.join(', ')} <br/>
-                                    <strong>Difficulty:</strong> {recipe.difficulty} <br/>
-                                    <strong>Ingredients:</strong> {recipe.ingredients.map(ingredient => (
-                                    <div key={uuidv4()}>
-                                        <strong>Name:</strong> {ingredient.name} <br/>
-                                        <strong>Quantity:</strong> {ingredient.quantity} <br/>
+                            <li key={uuidv4()} className="recipe-item">
+                                <div className="recipe-details">
+                                    <div className="recipe-header">
+                                        <h3 className="recipe-name">{recipe.name}</h3>
+                                        <p className="recipe-description"> {recipe.description}</p>
+                                        <img src={recipe.imageUrl} alt="Image not found"
+                                             className="recipe-image"/>
                                     </div>
-                                ))}
+                                    <div className="recipe-specification-container">
+                                        <div className="recipe-difficulty-origin-author-container">
+                                            <div className="recipe-difficulty">
+                                                <strong>Difficulty:</strong> {recipe.difficulty.charAt(0).toUpperCase() + recipe.difficulty.slice(1).toLowerCase()}
+                                            </div>
+                                            <div className="recipe-origin">
+                                                <strong>Origin:</strong> {recipe.origin.charAt(0).toUpperCase() + recipe.origin.slice(1).toLowerCase()}
+                                            </div>
+                                            <div className="recipe-author">
+                                                <strong>Author:</strong> {recipe.author}
+                                            </div>
+                                        </div>
+                                        <div className="recipe-type-category-container">
+                                            <div className="recipe-type">
+                                                <strong>Type:</strong> {recipe.type.map(type => {
+                                                const formattedType = type.replace(/_/g, ' ');
+                                                return formattedType.charAt(0).toUpperCase() + formattedType.slice(1).toLowerCase();
+                                            }).join(', ')}
+                                            </div>
+                                            <div className="recipe-category">
+                                                <strong>Category:</strong> {recipe.category.map(category => {
+                                                const formattedCategory = category.replace(/_/g, ' ');
+                                                return formattedCategory.charAt(0).toUpperCase() + formattedCategory.slice(1).toLowerCase();
+                                            }).join(', ')}
+                                            </div>
+                                        </div>
+
+                                        <div className="recipe-time-container">
+                                            <div className="recipe-preparation-time">
+                                                <div className="preparation-content">
+                                                    <div className="preparation-icon">
+                                                        <BlenderOutlinedIcon className="icon"/>
+                                                    </div>
+                                                    <div className="preparation-details">
+                                                        <strong>Preparation Time:</strong> <br/>
+                                                        {recipe.preparationTime.hours > 0 && `${recipe.preparationTime.hours}h `}
+                                                        {recipe.preparationTime.minutes > 0 && `${recipe.preparationTime.minutes}min`}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="recipe-total-time">
+                                                <div className="total-content">
+                                                    <div className="total-icon">
+                                                        <AlarmOnOutlinedIcon className="icon"/>
+                                                    </div>
+                                                    <div className="total-details">
+                                                        <strong>Total Time:</strong> <br/>
+                                                        {recipe.totalTime.hours > 0 && `${recipe.totalTime.hours}h `}
+                                                        {recipe.totalTime.minutes > 0 && `${recipe.totalTime.minutes}min`}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <br/>
+                                    <strong className="recipe-instructions">Instructions:</strong>
+                                    {recipe.instructions}
+                                    <br/>
+                                    <br/>
+                                    <strong className="recipe-ingredients">Ingredients:</strong>
+                                    {recipe.ingredients.map(ingredient => (
+                                        <div key={uuidv4()} className="ingredient-item">
+                                            <p className="ingredient-quantity"> {ingredient.quantity}</p> <p
+                                            className="ingredient-name">{ingredient.name}</p>
+                                        </div>
+                                    ))}
                                 </div>
-                                <button onClick={() => handleAddToLibrary(recipe)}>Add to Library</button>
+                                <button onClick={() => handleAddToLibrary(recipe)} className="add-to-library-button">Add
+                                    to Library
+                                </button>
                             </li>
                         ))}
                     </ul>
                 </div>
             )}
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </div>
     );
 }
-
-
-
-
-

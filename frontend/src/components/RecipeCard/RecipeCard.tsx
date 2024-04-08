@@ -24,7 +24,7 @@ export default function RecipeCard(props: Readonly<RecipeCardProps>) {
                 <CardMedia
                     component="img"
                     height="140"
-                    image= {props.recipe.imageUrl? props.recipe.imageUrl : "public/images/cook_with_ai.jpeg"}
+                    image= {props.recipe.imageUrl}
                     alt= "Image was not found :("
                 />
                 <CardContent>
