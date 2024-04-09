@@ -11,7 +11,7 @@ export type MultipleCheckboxCategoryProps = {
 }
 export default function MultipleCheckboxCategory(props: Readonly<MultipleCheckboxCategoryProps>){
     const optionalCategories=Object.values(RecipeCategory);
-    const [value, setValue] = useState<string[]>([]);
+    const [value, setValue] = useState<string[]>(props.categories);
 
     return(
             <FormControl sx={{ m: 1, width: 300 }}>
