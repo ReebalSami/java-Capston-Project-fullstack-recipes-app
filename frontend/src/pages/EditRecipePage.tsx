@@ -1,11 +1,11 @@
 import './EditRecipePage.css';
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, FormEvent, SyntheticEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {SelectChangeEvent} from "@mui/material";
 import axios from "axios";
 import {Recipe, RecipeIngredients} from "../types/Recipe.ts";
-import MultipleCheckbox from "../utility_functions/MultipleCheckbox.tsx";
+import MultipleCheckboxType from "../utility_functions/MultipleCheckboxType.tsx";
 import {categoryNormalizerMap, typeNormalizerMap} from "../utility_functions/recipeNormalizer.ts";
+import MultipleCheckboxCategory from "../utility_functions/MultipleCheckboxCategory.tsx";
 
 export type EditRecipePageProps = {
     recipe: Recipe;
@@ -29,9 +29,13 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
     const [preparationTimeMinutes, setPreparationTimeMinutes] = useState( props.recipe.preparationTime.minutes);
     const [totalTimeHours, setTotalTimeHours] = useState(props.recipe.totalTime.hours);
     const [totalTimeMinutes, setTotalTimeMinutes] = useState(props.recipe.totalTime.minutes);
+    const [imageUrl, setImageUrl] = useState(props.recipe.imageUrl);
 
     function handleNameChange(event: ChangeEvent<HTMLInputElement>) {
         setName(event.target.value);
+    }
+    function handleImageUrlChange(event: ChangeEvent<HTMLTextAreaElement>) {
+        setImageUrl(event.target.value);
     }
 
     function handleDescriptionChange(event: ChangeEvent<HTMLTextAreaElement>) {
@@ -55,19 +59,15 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
         console.log(event.target.value);
     }
 
-    function handleTypeChange(event: SelectChangeEvent<typeof types>) {
-        const{
-            target: {value},
-        } = event;
-        setTypes(typeof value === 'string' ? value.split(',') : value,);
+    function handleTypeChange(_event: SyntheticEvent<Element, Event>, value: string[]) {
+        setTypes(value);
     }
 
-    function handleCategoryChange(event: SelectChangeEvent<typeof categories>) {
-        const {
-            target: {value},
-        } = event;
-        setCategories(typeof value === 'string' ? value.split(',') : value,);
+    function handleCategoryChange(_event: SyntheticEvent<Element, Event>, value: string[]) {
+        setCategories(value);
     }
+
+
 
     const handleIngredientsChange = (event: ChangeEvent<HTMLInputElement>, index: number, fieldName: 'name' | 'quantity') => {
         const value: string = event.target.value;
@@ -112,7 +112,8 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
                 totalTime: {
                     hours: totalTimeHours,
                     minutes: totalTimeMinutes
-                }
+                },
+                imageUrl: imageUrl
             })
                 .then(() => {
                     props.fetchRecipes();
@@ -127,6 +128,15 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
             <form onSubmit={editThisItem}>
                 <label>
                     Name: <input type="text" value={name} onChange={handleNameChange} required/>
+                </label>
+                <label>
+                    imageUrl:<textarea
+                    id="imageUrl"
+                    name="imageUrl"
+                    value={imageUrl}
+                    onChange={handleImageUrlChange}
+                    required
+                />
                 </label>
 
                 <label>
@@ -203,9 +213,8 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
                     <input type="number" value={totalTimeMinutes} onChange={handleTotalTimeMinutesChange} required/>
                 </label>
 
-                <MultipleCheckbox categories={categories} changeCategories={handleCategoryChange}
-                                  types={types} changeTypes={handleTypeChange}
-                />
+                <MultipleCheckboxCategory categories={categories} handleCategories={handleCategoryChange}/>
+                <MultipleCheckboxType types={types} handleTypes={handleTypeChange}/>
 
                 <button type="submit">Save Changes</button>
                 <button onClick={() => props.recipe && navigate("/recipes/" + props.recipe.id)}>Cancel</button>

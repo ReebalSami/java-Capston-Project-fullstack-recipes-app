@@ -30,12 +30,6 @@ export type TotalTime = {
     minutes: number;
 }
 
-
-export enum RecipeDifficulty {
-    EASY = "Easy",
-    MEDIUM = "Medium",
-    HARD = "Hard"
-}
 export type RecipeIngredients = {
     name: string;
     quantity: string;
@@ -105,3 +99,4 @@ export enum RecipeIngredientsList {
     CEREALS = "Cereals",
     DAIRY = "Dairy",
 }
+

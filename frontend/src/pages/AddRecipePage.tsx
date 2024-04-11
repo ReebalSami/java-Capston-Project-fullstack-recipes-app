@@ -1,7 +1,13 @@
 import "./AddRecipePage.css";
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, FormEvent, SyntheticEvent, useState} from "react";
 import {addRecipeToLibrary} from "../utility_functions/addRecipe.ts";
 import {Recipe, RecipeFormPrimitiveInputType, RecipeFormPrimitiveInputValue} from "../types/Recipe.ts";
+import OriginSelect from "../utility_functions/OriginSelect.tsx";
+import {RecipeOrigin} from "../types/RecipeOrigin.ts";
+import MultipleCheckboxCategory from "../utility_functions/MultipleCheckboxCategory.tsx";
+import MultipleCheckboxType from "../utility_functions/MultipleCheckboxType.tsx";
+import {RecipeDifficulty} from "../types/RecipeDifficulty.ts";
+import DifficultySelect from "../utility_functions/DifficultySelect.tsx";
 
 
 type AddRecipePageProps = {
@@ -49,6 +55,31 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
             changeFormValue(key, value);
         }
     };
+    const handleChangeOrigin = (_event: SyntheticEvent<Element, Event>, value: RecipeOrigin | null) => {
+        if (value) {
+            changeFormValue('origin', value.label);
+        } else {
+            changeFormValue('origin', '');
+        }
+    }
+    const handleChangeDifficulty = (_event: SyntheticEvent<Element, Event>, value:RecipeDifficulty  | null) => {
+        if (value) {
+
+            changeFormValue('difficulty', value.toUpperCase());
+        } else {
+            changeFormValue('difficulty', '');
+        }
+    }
+
+    const handleCategoryChange = (_event: SyntheticEvent<Element, Event>, value: string[]) => {
+        const uppercaseCategories = value.map(category => category.toUpperCase());
+        changeFormValue('category', uppercaseCategories);
+    }
+
+    const handleTypeChange = (_event: SyntheticEvent<Element, Event>, value: string[]) => {
+        const uppercaseTypes = value.map(type => type.toUpperCase());
+        changeFormValue('type', uppercaseTypes);
+    }
 
     const handleTimeInput = (key: string, hourInputName: string, minuteInputName: string) => {
         const hours = getFormElementValue(hourInputName);
@@ -159,13 +190,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     onChange={handleChangeEvent.bind(null, 'string', 'author')}
                 />
                 <label htmlFor="origin">Origin:</label>
-                <input
-                    type="text"
-                    id="origin"
-                    name="origin"
-                    value={recipe.origin}
-                    onChange={handleChangeEvent.bind(null, 'string', 'origin')}
-                />
+                <OriginSelect handleOrigins={handleChangeOrigin}/>
                 <label htmlFor="hours">Preparation Time (hours):</label>
                 <select
                     id="hours"
@@ -210,53 +235,14 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                         <option key={minute} value={minute}>{minute}</option>
                     ))}
                 </select>
-                <label htmlFor="type">Type:</label>
-                <select
-                    id="type"
-                    name="type"
-                    value={recipe.type}
-                    onChange={handleChangeEvent.bind(null, 'array', 'type')}
-                >
-                    <option value="VEGAN">Vegan</option>
-                    <option value="VEGETARIAN">Vegetarian</option>
-                    <option value="WITH_MEAT">With Meat</option>
-                    <option value="PESCATARIAN">Pescatarian</option>
-                    <option value="GLUTEN_FREE">Gluten Free</option>
-                    <option value="LACTOSE_FREE">Lactose Free</option>
-                    <option value="OTHER">Other</option>
-                </select>
+
                 <label htmlFor="category">Category:</label>
-                <select
-                    id="category"
-                    name="category"
-                    value={recipe.category}
-                    onChange={handleChangeEvent.bind(null, 'array', 'category')}
-                >
-                    <option value="BREAKFAST">Breakfast</option>
-                    <option value="LUNCH">Lunch</option>
-                    <option value="DINNER">Dinner</option>
-                    <option value="DESSERT">Dessert</option>
-                    <option value="SNACK">Snack</option>
-                    <option value="DRINK">Drink</option>
-                    <option value="APPETIZER">Appetizer</option>
-                    <option value="SALAD">Salad</option>
-                    <option value="SOUP">Soup</option>
-                    <option value="SIDE_DISH">Side Dish</option>
-                    <option value="MAIN_DISH">Main Dish</option>
-                    <option value="BAKING">Baking</option>
-                    <option value="OTHER">Other</option>
-                </select>
+                <MultipleCheckboxCategory categories={recipe.category} handleCategories={handleCategoryChange}/>
+                <label htmlFor="type">Type:</label>
+                <MultipleCheckboxType types={recipe.type} handleTypes={handleTypeChange}/>
                 <label htmlFor="difficulty">Difficulty:</label>
-                <select
-                    id="difficulty"
-                    name="difficulty"
-                    value={recipe.difficulty}
-                    onChange={handleChangeEvent.bind(null, 'string', 'difficulty')}
-                >
-                    <option value="EASY">Easy</option>
-                    <option value="MEDIUM">Medium</option>
-                    <option value="HARD">Hard</option>
-                </select>
+                <DifficultySelect handleDifficulty={handleChangeDifficulty}/>
+
                 <div>
                     <label htmlFor="ingredients">Ingredients:</label>
                     {recipe.ingredients.map((ingredient, index) => (
