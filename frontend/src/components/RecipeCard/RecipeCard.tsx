@@ -2,7 +2,7 @@ import {Recipe} from "../../types/Recipe.ts";
 import {useNavigate} from "react-router-dom";
 import "./RecipeCard.css";
 import Card from "@mui/material/Card";
-import {Button, CardActionArea, CardActions} from "@mui/material";
+import {CardActionArea, CardActions} from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -20,7 +20,7 @@ export default function RecipeCard(props: Readonly<RecipeCardProps>) {
 
     return (
         <Card className="recipe-card">
-            <CardActionArea>
+            <CardActionArea onClick={() => (goToRecipeDetailsPage(props.recipe.id))}>
                 <CardMedia
                     component="img"
                     height="140"
@@ -28,7 +28,7 @@ export default function RecipeCard(props: Readonly<RecipeCardProps>) {
                     alt= "Image was not found :("
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography gutterBottom variant="h5" component="div" >
                         {props.recipe.name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
@@ -42,9 +42,7 @@ export default function RecipeCard(props: Readonly<RecipeCardProps>) {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button onClick={() => (goToRecipeDetailsPage(props.recipe.id))}>
-                    learn more
-                </Button>
+
             </CardActions>
         </Card>
     );
