@@ -6,6 +6,7 @@ import {CardActionArea, CardActions} from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import HalfRating from "../rating/Rating.tsx";
 
 type RecipeCardProps = {
     recipe: Recipe
@@ -28,7 +29,7 @@ export default function RecipeCard(props: Readonly<RecipeCardProps>) {
                     alt= "Image was not found :("
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div" >
+                    <Typography gutterBottom variant="h5" component="div" className="recipe-name">
                         {props.recipe.name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
@@ -42,7 +43,7 @@ export default function RecipeCard(props: Readonly<RecipeCardProps>) {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-
+                <HalfRating/>
             </CardActions>
         </Card>
     );

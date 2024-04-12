@@ -26,7 +26,6 @@
 
 .form-button {
     padding: 10px 20px;
-    background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -35,12 +34,12 @@
 }
 
 .form-button:disabled {
-    background-color: #ccc;
     cursor: not-allowed;
 }
 
 .form-button:hover {
-    background-color: #0056b3;
+    transform: scale(1.05);
+    transition: transform 0.3s;
 }
 
 .recipe-list {
@@ -154,7 +153,6 @@
 
 .add-to-library-button {
     padding: 5px 10px;
-    background-color: #28a745;
     color: #fff;
     border: none;
     border-radius: 3px;
@@ -163,8 +161,8 @@
 }
 
 .add-to-library-button:hover {
-    background-color: #218838;
-}
+    transform: scale(1.05);
+    transition: transform 0.3s;}
 
 .ingredient-item {
     display: flex;

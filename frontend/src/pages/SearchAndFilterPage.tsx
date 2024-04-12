@@ -68,7 +68,8 @@ export default function SearchAndFilterPage(props: Readonly<SearchAndFilterPageP
             </div>
             <div className="recipe-list">
                 <h2>Recipe List</h2>
-                <div className="recipes-container" style={{display: 'flex', flexWrap: 'wrap'}}>
+                <div className="recipes-container"
+                     style={{display: 'flex', flexWrap: 'wrap', gap: '20px', marginTop: '20px'}}>
                     {filteredRecipes.map((recipe) => (
                         <RecipeCard key={recipe.id} recipe={recipe}/>
                     ))}
