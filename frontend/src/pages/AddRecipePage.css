@@ -38,10 +38,6 @@
     cursor: pointer;
 }
 
-.addRecipeForm button:hover {
-
-}
-
 .error {
     color: red;
     text-align: center;
