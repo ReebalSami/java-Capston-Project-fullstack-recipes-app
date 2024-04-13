@@ -30,7 +30,7 @@ export default function RecipeCard(props: Readonly<RecipeCardProps>) {
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div" className="recipe-name">
-                        {props.recipe.name}
+                        {props.recipe.name.length > 20 ? props.recipe.name.substring(0, 20) + '...' : props.recipe.name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                         Preparation time:

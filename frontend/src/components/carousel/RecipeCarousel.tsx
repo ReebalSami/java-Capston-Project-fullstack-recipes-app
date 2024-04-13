@@ -22,8 +22,8 @@ export default function RecipeCarousel(props: Readonly<RecipeCarouselProps>) {
     };
     return (
             <div className="carousel">
-                <h2 className="carousel-title">Latest Recipes</h2>
-                <Box className="box-content" display="flex" alignItems="center" justifyContent="center">
+                <h2 className="carousel-title" style={{marginLeft: '75px'}}>Latest Recipes</h2>
+                <Box className="box-content" display="flex" alignItems="center" justifyContent="center" >
                     <IconButton
                         className="navigation-buttons"
                         onClick={goToPrevious}
