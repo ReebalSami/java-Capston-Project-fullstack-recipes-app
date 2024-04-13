@@ -5,11 +5,6 @@
 
 .recipes-container {
     display: flex;
-    flex-wrap: wrap;
-}
-
-.recipes-container {
-    display: flex;
     gap: 10px;
     flex-flow: row wrap;
     padding: 0;
