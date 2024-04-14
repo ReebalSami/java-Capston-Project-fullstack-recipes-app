@@ -319,7 +319,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     <Button variant="outlined" startIcon={<CancelIcon onClick={() => navigate("/")} />}>
                         Cancel
                     </Button>
-                    <Button variant="contained" endIcon={<SendIcon type="submit" />}>
+                    <Button variant="contained" type="submit"  endIcon={<SendIcon/>}>
                         Send
                     </Button>
                 </Stack>
