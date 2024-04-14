@@ -44,21 +44,17 @@ button {
     margin-top: 20px;
     border: none;
     border-radius: 4px;
-    background-color: #007bff;
     color: #fff;
     font-size: 16px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #0056b3;
+    transform: scale(1.05);
+    transition: transform 0.3s;
 }
 
 button:last-child {
     margin-right: 10px;
-    background-color: #dc3545;
 }
 
-button:last-child:hover {
-    background-color: #c82333;
-}

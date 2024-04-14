@@ -1,6 +1,7 @@
 .homepage-container {
     overflow-y: auto;
     height: 100vh;
+    border: none;
 }
 
 .homepage-image {
@@ -8,28 +9,4 @@
     height: auto;
 }
 
-.carousel-section {
-    margin: 10px;
-    min-height: 275px;
-    max-height: 500px;
-    position: relative;
-    height: 100%;
-    line-height: normal;
-    width: 100%;
-}
-
-.carousel {
-    display: grid;
-    overflow-x: auto;
-    white-space: nowrap;
-    justify-content: space-evenly;
-    align-items: stretch;
-    max-height: 400px;
-}
-
-.carousel-title {
-    font-size: 1.5em;
-    font-weight: bold;
-    margin: 10px;
-}
 

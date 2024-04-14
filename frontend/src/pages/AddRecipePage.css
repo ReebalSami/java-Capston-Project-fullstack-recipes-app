@@ -32,15 +32,10 @@
 .addRecipeForm button {
     width: 100%;
     padding: 10px;
-    background-color: green;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-}
-
-.addRecipeForm button:hover {
-    background-color: green;
 }
 
 .error {
