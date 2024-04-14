@@ -1,35 +1,38 @@
 import "./Navigation.css";
 import {Link, useNavigate} from "react-router-dom";
 import React, {useState} from "react";
-import {Menu, MenuItem} from "@mui/material";
+import {Button, Menu, MenuItem, Stack} from "@mui/material";
 
 export default function Navigation() {
-    const[anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
 
-
-    const handleClickAddRecipe = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const handleClickAddRecipe = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
+    };
 
-    }
+    const handleMenuItemClick = (destination: string) => {
+        navigate(destination);
+        handleClose();
+    };
+
     return (
         <nav>
-            <ul>
-                <li><Link to={"/"}>Home</Link></li>
-                <li><Link to={"/recipes"}>Recipes</Link></li>
-                <li className={"icon-place button"}>
-                    <a href="#" onClick={handleClickAddRecipe}>Add Recipe</a>
-                    <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                        <MenuItem onClick={() => navigate("/recipes/add")}>manually</MenuItem>
-                        <MenuItem onClick={() => navigate("/recipes/generate")}>generate with AI</MenuItem>
-                    </Menu>
-                </li>
-                <li><Link to={"/support"}>Support</Link></li>
-            </ul>
+            <Stack direction="row" spacing={1}>
+                <Button component={Link} to={"/"} style={{color: 'white'}}>Home</Button>
+                <Button component={Link} to={"/recipes"} style={{color: 'white'}}>Recipes</Button>
+                <Button onClick={handleClickAddRecipe} style={{color: 'white'}}>Add Recipe</Button>
+                <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                    <MenuItem onClick={() => handleMenuItemClick("/recipes/add")}>manually</MenuItem>
+                    <MenuItem onClick={() => handleMenuItemClick("/recipes/generate")}>generate with AI</MenuItem>
+                </Menu>
+                <Button component={Link} to={"/support"} style={{color: 'white'}}>Support</Button>
+            </Stack>
         </nav>
-    )
+    );
 }
