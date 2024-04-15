@@ -29,17 +29,18 @@
     box-sizing: border-box;
 }
 
-.addRecipeForm button {
+/*.addRecipeForm button {
     width: 100%;
     padding: 10px;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-}
+}*/
 
 .error {
     color: red;
     text-align: center;
     margin-top: 10px;
 }
+
