@@ -320,7 +320,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                         Cancel
                     </Button>
                     <Button variant="contained" type="submit"  endIcon={<SendIcon/>}>
-                        Send
+                        Save Recipe
                     </Button>
                 </Stack>
             </form>
