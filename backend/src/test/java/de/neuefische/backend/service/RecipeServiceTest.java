@@ -51,7 +51,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER.getNormalCategory(), RecipeCategory.SIDE_DISH.getNormalCategory()),
                 RecipeDifficulty.EASY.getNormalDifficulty(),
                 recipeIngredients,
-                "Test Image"
+                "Test Image",
+                null
         ));
         List<Recipe> expectedRecipes = List.of(new Recipe("1",
                 "Test Recipe",
@@ -65,7 +66,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 recipeIngredients,
-                "Test Image"
+                "Test Image",
+                null
         ));
         when(repo.findAll()).thenReturn(expectedRecipes);
         //WHEN
@@ -91,7 +93,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER.getNormalCategory(), RecipeCategory.SIDE_DISH.getNormalCategory()),
                 RecipeDifficulty.EASY.getNormalDifficulty(),
                 List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2")),
-                "Test Image"
+                "Test Image",
+                null
         );
         Recipe expectedRecipe = new Recipe("1",
                 "Test Recipe",
@@ -105,7 +108,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2")),
-                "Test Image"
+                "Test Image",
+                null
         );
         //WHEN
         when(repo.findById(id)).thenReturn(Optional.of(expectedRecipe));
@@ -138,7 +142,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2")),
-                "Test Image"
+                "Test Image",
+                null
         );
         RecipeDto recipeDto = new RecipeDto(
                 "Test Recipe",
@@ -152,7 +157,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2")),
-                "Test Image"
+                "Test Image",
+                null
         );
         RecipeNormalized expected = new RecipeNormalized("1",
                 "Test Recipe",
@@ -166,7 +172,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER.getNormalCategory(), RecipeCategory.SIDE_DISH.getNormalCategory()),
                 RecipeDifficulty.EASY.getNormalDifficulty(),
                 List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2")),
-                "Test Image"
+                "Test Image",
+                null
         );
         Recipe expectedRecipe = new Recipe("1",
                 "Test Recipe",
@@ -180,7 +187,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2")),
-                "Test Image"
+                "Test Image",
+                null
         );
         //WHEN
         when(repo.findById(id)).thenReturn(Optional.of(recipe));
@@ -208,7 +216,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2")),
-                "Test Image"
+                "Test Image",
+                null
         );
         //THEN
         assertThrows(RecipeNotFoundException.class, () -> recipeService.updateRecipeById(id, recipeDto));
@@ -229,7 +238,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2")),
-                "Test Image"
+                "Test Image",
+                null
         );
         RecipeNormalized expected = new RecipeNormalized("1",
                 "Test Recipe",
@@ -243,7 +253,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER.getNormalCategory(), RecipeCategory.SIDE_DISH.getNormalCategory()),
                 RecipeDifficulty.EASY.getNormalDifficulty(),
                 List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2")),
-                "Test Image"
+                "Test Image",
+                null
         );
         Recipe expectedRecipes = new Recipe("1",
                 "Test Recipe",
@@ -257,7 +268,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 List.of(new RecipeIngredients("name test", "quantity 1"), new RecipeIngredients("name test 2", "quantity 2")),
-                "Test Image"
+                "Test Image",
+                null
         );
 
         //WHEN
@@ -289,7 +301,8 @@ class RecipeServiceTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 recipeIngredients,
-                "Test Image"
+                "Test Image",
+                null
         );
         String expected = "Recipe with ID: " + id + " has been deleted successfully.";
         //WHEN

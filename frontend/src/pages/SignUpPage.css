@@ -1,0 +1,14 @@
+.signUpGreeting{
+    font-family: Helvetica, sans-serif;
+    font-size: 17px;
+    color: #ffffff;
+    gap: 10px;
+    margin: 20px 0 10px 0;
+}
+
+.signUpPage{
+    font-family: Helvetica, serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

@@ -8,9 +8,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import {Box} from "@mui/material";
 import "./UserAction.css";
+import {User} from "../../types/User.ts";
+import {useNavigate} from "react-router-dom";
 
 type UserActionProps = {
-    user: string | undefined | null
+    user: User | undefined | null
 }
 
 const LoggedOutSettings = ['Login', 'Sign Up'];
@@ -18,6 +20,7 @@ const LoggedInSettings = ['Profile', 'Logout'];
 
 export default function UserAction(props: Readonly<UserActionProps>) {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const navigate = useNavigate();
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -30,7 +33,7 @@ export default function UserAction(props: Readonly<UserActionProps>) {
     function Login() {
         const host = window.location.host === 'localhost:5173' ? 'http://localhost:8080' : window.location.origin
 
-        window.open(host + '/oauth2/authorization/github', '_self')
+        window.open(host + '/oauth2/authorization/github', '_self');
     }
 
     function Logout() {
@@ -43,6 +46,7 @@ export default function UserAction(props: Readonly<UserActionProps>) {
         handleCloseUserMenu();
         if (action === 'Login' || action === 'Sign Up') {
             Login();
+            navigate("/sign_up");
         } else if (action === 'Logout') {
             Logout();
         }
@@ -55,13 +59,13 @@ export default function UserAction(props: Readonly<UserActionProps>) {
                         {props.user === null &&
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                    <Avatar alt="profile_picture" > RS</Avatar>
                                 </IconButton>
                             </Tooltip>}
-                        {props.user !== null &&
+                        {props.user &&
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                    <Avatar alt="Remy Sharp" src={props.user.imagePath} />
                                 </IconButton>
                             </Tooltip>}
                         <Menu
@@ -94,7 +98,7 @@ export default function UserAction(props: Readonly<UserActionProps>) {
                     </Box>
                     {props.user !== null &&
                         <div className={"greeting"}>
-                            <p className={"loginName"}>Hallo {props.user}</p>
+                            <p className={"loginName"}>Hallo {props.user?.firstName}</p>
                         </div>
                     }
                 </Box>

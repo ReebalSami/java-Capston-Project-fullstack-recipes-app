@@ -130,7 +130,8 @@ class RecipeControllerTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 recipeIngredients,
-                "imageUrl"
+                "imageUrl",
+                null
         );
         repo.save(recipe);
         //WHEN & THEN
@@ -188,7 +189,8 @@ class RecipeControllerTest {
                 List.of(RecipeCategory.BREAKFAST, RecipeCategory.LUNCH ,RecipeCategory.DINNER, RecipeCategory.SIDE_DISH, RecipeCategory.DESSERT, RecipeCategory.SNACK, RecipeCategory.DRINK, RecipeCategory.APPETIZER, RecipeCategory.SALAD, RecipeCategory.SOUP, RecipeCategory.MAIN_DISH, RecipeCategory.BAKING, RecipeCategory.OTHER),
                 RecipeDifficulty.HARD,
                 recipeIngredients,
-                "imageUrl"
+                "imageUrl",
+                null
         );
         repo.save(recipe);
         //WHEN & THEN
@@ -246,7 +248,8 @@ class RecipeControllerTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 recipeIngredients,
-                "imageUrl"
+                "imageUrl",
+                null
         );
         repo.save(recipe);
         //WHEN & THEN
@@ -422,7 +425,8 @@ class RecipeControllerTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 recipeIngredients,
-                "imageUrl"
+                "imageUrl",
+                null
         );
         repo.save(recipe);
         String requestBody = """
@@ -477,12 +481,12 @@ class RecipeControllerTest {
                                                         "name": "name test 6",
                                                         "quantity": "quantity 30"
                                                     }
-                                                        
+                        
                                                 ],
                                 "imageUrl": "imageUrl"
                         }
-                                                
-                                             """))
+                        
+                        """))
                 .andReturn();
 
     }
@@ -508,7 +512,8 @@ class RecipeControllerTest {
                 List.of(RecipeCategory.DINNER, RecipeCategory.SIDE_DISH),
                 RecipeDifficulty.EASY,
                 recipeIngredients,
-                "imageUrl"
+                "imageUrl",
+                null
         );
         repo.save(recipe);
         String message = "Recipe with ID: 1 has been deleted successfully.";

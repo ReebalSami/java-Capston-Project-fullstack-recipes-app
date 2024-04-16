@@ -5,10 +5,13 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import {Recipe} from "../../types/Recipe.ts";
 import {useState} from "react";
 import RecipeCard from "../RecipeCard/RecipeCard.tsx";
+import {User} from "../../types/User.ts";
 
 
 type RecipeCarouselProps = {
     recipes: Recipe[];
+    fetchRecipe: () => void;
+    user: User | null | undefined;
 };
 
 export default function RecipeCarousel(props: Readonly<RecipeCarouselProps>) {
@@ -37,7 +40,7 @@ export default function RecipeCarousel(props: Readonly<RecipeCarouselProps>) {
                             <Grid container justifyContent="center" spacing={2}>
                                 {visibleRecipes.map((recipe) => (
                                     <Grid key={recipe.id} item>
-                                        <RecipeCard recipe={recipe}/>
+                                        <RecipeCard fetchRecipe={props.fetchRecipe} recipe={recipe} user={props.user}/>
                                     </Grid>
                                 ))}
                             </Grid>

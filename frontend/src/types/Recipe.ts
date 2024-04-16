@@ -1,3 +1,5 @@
+import {Rating} from "./Rating.ts";
+
 export type Recipe = {
     id?: string;
     name: string;
@@ -12,6 +14,7 @@ export type Recipe = {
     difficulty: string;
     ingredients: RecipeIngredients[];
     imageUrl: string;
+    ratings?: Rating[];
 
 }
 export type RecipeTime = PreparationTime | TotalTime;

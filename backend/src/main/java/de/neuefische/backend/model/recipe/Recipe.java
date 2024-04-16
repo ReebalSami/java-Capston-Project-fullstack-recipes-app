@@ -1,10 +1,9 @@
 package de.neuefische.backend.model.recipe;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -25,4 +24,7 @@ public class Recipe {
     private RecipeDifficulty difficulty;
     private List<RecipeIngredients> ingredients;
     private String imageUrl;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Rating> ratings = new ArrayList<>();
 }

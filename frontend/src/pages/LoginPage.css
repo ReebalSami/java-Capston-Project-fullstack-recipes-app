@@ -1,0 +1,39 @@
+.loginPage{
+    display: flex;
+    flex-direction: column;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    justify-content: center;
+    height: 100vh;
+}
+
+.loginBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.49);
+    width: 100%;
+    height: 200px;
+    gap: 10px;
+}
+
+.beta4u_logo{
+    width: 300px;
+}
+
+.loginButton{
+    width: 230px !important;
+    color: orange !important;
+    border-color: orange !important;
+    background-color: rgba(164, 163, 163, 0.62) !important;
+    font-size: 14px !important;
+}
+
+
+
+
+.loginIcon{
+    filter: brightness(100%) saturate(0%) sepia(100%) hue-rotate(30deg) !important;
+}
