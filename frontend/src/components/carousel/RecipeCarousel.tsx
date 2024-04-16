@@ -13,7 +13,8 @@ type RecipeCarouselProps = {
 
 export default function RecipeCarousel(props: Readonly<RecipeCarouselProps>) {
     const [startIndex, setStartIndex] = useState(0);
-    const visibleRecipes = props.recipes.slice(startIndex, startIndex + 3);
+    const reversedRecipes = props.recipes.slice().reverse();
+    const visibleRecipes = reversedRecipes.slice(startIndex, startIndex + 3);
     const goToPrevious = () => {
         setStartIndex((prevIndex) => Math.max(0, prevIndex - 3));
     };

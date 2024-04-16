@@ -24,19 +24,6 @@
     font-weight: bold;
 }
 
-.form-button {
-    padding: 10px 20px;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.form-button:disabled {
-    cursor: not-allowed;
-}
-
 .form-button:hover {
     transform: scale(1.05);
     transition: transform 0.3s;
@@ -147,17 +134,6 @@
 
 .icon {
     font-size: 1.1em;
-}
-
-
-
-.add-to-library-button {
-    padding: 5px 10px;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 .add-to-library-button:hover {

@@ -184,6 +184,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     role={undefined}
                     style={{width: 144.22}}
                     variant="contained"
+                    className={"upload-button"}
                     tabIndex={-1}
                     startIcon={<CloudUploadIcon/>}
                 >

@@ -24,15 +24,6 @@
     padding-left: 0;
 }
 
-.back-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
 .back-button:hover {
     transform: scale(1.05);
     transition: transform 0.3s;}
