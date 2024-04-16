@@ -63,7 +63,7 @@ export default function FormComponent(props: Readonly<FormComponentProps>) {
     }
 
     return (
-        <div >
+        <div className={"formComponent"}>
             <Avatar className={"formPicture"} alt="profile_picture" src={props.user.imagePath}/>
             <form className={"form"} onSubmit={handleOnSubmit}>
                 <TextField title={"TEST"} sx={{m: 1, width: 300}}

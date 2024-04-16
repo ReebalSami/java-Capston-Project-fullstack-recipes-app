@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import BlenderOutlinedIcon from "@mui/icons-material/BlenderOutlined";
 import AlarmOnOutlinedIcon from "@mui/icons-material/AlarmOnOutlined";
+import RatingSystem from "../components/ratingSystem/RatingSystem.tsx";
 
 
 type RecipeDetailsPageProps = {
@@ -79,21 +80,27 @@ export default function RecipeDetailsPage(props: Readonly<RecipeDetailsPageProps
                         <div className="recipe-origin">
                             <strong>Origin:</strong> {props.recipe.origin}
                         </div>
-                        <div className="recipe-author">
-                            <strong>Author:</strong> {props.recipe.author}
+                        <div className="recipe-rating">
+                            <RatingSystem recipe={props.recipe} fetchData={fetchRecipeById} user={null}/>
                         </div>
+
+
+
                     </div>
                     <div className="recipe-type-category-container">
                         <div className="recipe-type">
-                            <strong>Type:</strong> {props.recipe.type.join(', ')}
+                        <strong>Type:</strong> {props.recipe.type.join(', ')}
                         </div>
                         <div className="recipe-category">
                             <strong>Category:</strong> {props.recipe.category.join(', ')}
                         </div>
+                        <div className="recipe-author">
+                            <strong>Author:</strong> {props.recipe.author}
+                        </div>
                     </div>
                     <div className="recipe-time-container">
                         <div className="recipe-preparation-time">
-                            <div className="preparation-content">
+                        <div className="preparation-content">
                                 <div className="preparation-icon">
                                     <BlenderOutlinedIcon className="icon"/>
                                 </div>

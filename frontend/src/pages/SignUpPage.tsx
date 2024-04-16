@@ -11,11 +11,8 @@ export default function SignUpPage(props: Readonly<SignUpPageProps>){
 
     return(
         <div className={"pages"}>
+            <br/>
             <div className={"signUpPage"}>
-                <div className={"signUpGreeting"}>
-                    <div>Hi, welcome!</div>
-                    <div>Create your new profile</div>
-                </div>
                 <FormComponent user={props.user} fetchUser={props.fetchUser} path={"/"} formTarget={"create"}/>
             </div>
         </div>

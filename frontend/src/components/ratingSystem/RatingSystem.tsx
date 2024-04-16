@@ -1,7 +1,7 @@
 import {Rating} from "@mui/material";
 import {SyntheticEvent, useState} from "react";
 import axios from "axios";
-import StarIcon from '@mui/icons-material/Star';
+import "./RatingSystem.css";
 
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import {Recipe} from "../../types/Recipe.ts";
@@ -45,12 +45,19 @@ export default function RatingSystem(props: Readonly<RatingSystemProps>) {
 
     return (
         <div className={"ratingSystem"}>
-            <Rating emptyIcon={<StarBorderIcon className={"emptyIcon"} />} name={"half-rating"} value={myRating} onChange={handleSelectStars} precision={0.5}/>
+            <div className={"ratingWrapper"}>
+                <Rating emptyIcon={<StarBorderIcon className={"emptyIcon"} />} name={"half-rating"} value={myRating} onChange={handleSelectStars} precision={0.5}/>
+            </div>
             { averageRating !== 0 &&
                 <div className={"averageRating"}>
-                    {averageRating.toFixed(1)} <StarIcon className={"starIcon"}/>
+                <span className={"averageRatingText"}>
+                    {averageRating.toFixed(1)}
+                </span>
+                    <StarBorderIcon className={"emptyIcon"}/>
                 </div>
             }
         </div>
     )
+
+
 }

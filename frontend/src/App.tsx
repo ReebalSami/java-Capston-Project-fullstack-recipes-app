@@ -14,6 +14,8 @@ import ProtectedRoutes from "./ProtectedRoutes.tsx";
 import {User} from "./types/User.ts";
 import LoginPage from "./pages/LoginPage.tsx";
 import SignUpPage from "./pages/SignUpPage.tsx";
+import UserProfilePage from "./pages/UserProfilePage.tsx";
+import EditProfile from "./pages/EditProfile.tsx";
 
 export default function App() {
     const [recipes, setRecipes] = useState<Recipe[] | null | undefined>(undefined);
@@ -77,6 +79,8 @@ export default function App() {
                 <Route path={"/login"} element={<LoginPage/>}/>
                 <Route element={<ProtectedRoutes user={user} />}>
                     <Route path={"/sign_up"} element={user && <SignUpPage user={user} fetchUser={fetchUser}/>}/>
+                    <Route path={"/profile/:id/:tabName?"} element={user && <UserProfilePage user={user}/>}/>
+                    <Route path={"/editProfile"} element={user && <EditProfile fetchUser={fetchUser} user={user}/>}/>
                     <Route path="/recipes" element={<RecipesPage user={user} fetchRecipe={fetchRecipes} recipes={recipes}/>}/>
                     <Route path="/recipes/:id" element={<RecipeDetailsPage recipe={recipe} setRecipe={setRecipe} fetchRecipes={fetchRecipes}/>}/>
                     <Route path="/recipes/add" element={<AddRecipePage recipes={recipes} fetchRecipes={fetchRecipes}/>}/>

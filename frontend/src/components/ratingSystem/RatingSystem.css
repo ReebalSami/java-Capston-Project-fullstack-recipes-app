@@ -1,0 +1,19 @@
+.ratingSystem {
+    display: flex;
+    align-items: center;
+}
+
+.ratingWrapper {
+    flex: 1;
+}
+
+.averageRating {
+    display: flex;
+    color: #c0a644;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.averageRatingText {
+    color: #000;
+}

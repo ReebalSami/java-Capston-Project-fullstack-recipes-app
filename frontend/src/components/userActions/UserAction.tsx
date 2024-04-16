@@ -20,7 +20,9 @@ const LoggedInSettings = ['Profile', 'Logout'];
 
 export default function UserAction(props: Readonly<UserActionProps>) {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
     const navigate = useNavigate();
+
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -42,12 +44,16 @@ export default function UserAction(props: Readonly<UserActionProps>) {
         window.open(host + '/logout', '_self')
     }
 
+
+
     const handleMenuItemClick = (action: string) => {
         handleCloseUserMenu();
         if (action === 'Login' || action === 'Sign Up') {
             Login();
-            navigate("/sign_up");
-        } else if (action === 'Logout') {
+        } else if (action === 'Profile') {
+            navigate('/profile/' + props.user?.id);
+        }
+        else if (action === 'Logout') {
             Logout();
         }
     };
@@ -65,7 +71,7 @@ export default function UserAction(props: Readonly<UserActionProps>) {
                         {props.user &&
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src={props.user.imagePath} />
+                                    <Avatar alt="profile_picture" src={props.user.imagePath} />
                                 </IconButton>
                             </Tooltip>}
                         <Menu

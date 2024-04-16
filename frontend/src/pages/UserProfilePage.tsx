@@ -5,6 +5,7 @@ import {ExpandMore} from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import {AppBar, Collapse, Tabs} from "@mui/material";
+import "./UserProfilePage.css";
 
 
 type UserProfilePageProps ={
@@ -31,7 +32,7 @@ export default function UserProfilePage(props: Readonly <UserProfilePageProps>){
     };
 
     return (
-        <div >
+        <div>
             <div className={"profileHeader"}>
                 <div className={"profilePicInfo"}>
                     <img className={"profilePicture"} alt={"my_picture"} src={props.user.imagePath}/>
@@ -63,7 +64,13 @@ export default function UserProfilePage(props: Readonly <UserProfilePageProps>){
                     </Tabs>
                 </AppBar>
             </div>
-
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </div>
+
     )
 }
