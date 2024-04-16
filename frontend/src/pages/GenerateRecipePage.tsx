@@ -7,6 +7,7 @@ import MultipleCheckboxOpenAi from "../utility_functions/MultipleCheckboxOpenAi.
 import "./GenerateRecipePage.css";
 import BlenderOutlinedIcon from '@mui/icons-material/BlenderOutlined';
 import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
+import {Button} from "@mui/material";
 
 
 const BACKEND_ENDPOINT = '/api/chat';
@@ -73,9 +74,9 @@ export default function GenerateRecipePage(props: Readonly<GenerateRecipePagePro
             <form onSubmit={handleOnSubmit} className="recipe-form">
                 <label htmlFor="ingredient" className="form-label">Choose what you have in the fridge:</label>
                 <MultipleCheckboxOpenAi handleIngredients={handleDropdownChange} />
-                <button type="submit" disabled={loading} className="form-button">
+                <Button type="submit" variant="contained" disabled={loading} color="success" >
                     {loading ? 'Generating recipes...' : 'Generate'}
-                </button>
+                </Button>
             </form>
             {loading && <p className="loading">Generating recipes...</p>}
             {generatedData && (
@@ -160,9 +161,11 @@ export default function GenerateRecipePage(props: Readonly<GenerateRecipePagePro
                                         </div>
                                     ))}
                                 </div>
-                                <button onClick={() => handleAddToLibrary(recipe)} className="add-to-library-button">Add
-                                    to Library
-                                </button>
+                              <br/>
+                              <br/>
+                                <Button variant="contained" color="success" onClick={() => handleAddToLibrary(recipe)}>
+                                    Add to Library
+                                </Button>
                             </li>
                         ))}
                     </ul>

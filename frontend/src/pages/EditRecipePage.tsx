@@ -6,6 +6,9 @@ import {Recipe, RecipeIngredients} from "../types/Recipe.ts";
 import MultipleCheckboxType from "../utility_functions/MultipleCheckboxType.tsx";
 import {categoryNormalizerMap, typeNormalizerMap} from "../utility_functions/recipeNormalizer.ts";
 import MultipleCheckboxCategory from "../utility_functions/MultipleCheckboxCategory.tsx";
+import {Button, Stack} from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
+import SendIcon from "@mui/icons-material/Send";
 
 export type EditRecipePageProps = {
     recipe: Recipe;
@@ -216,8 +219,14 @@ export default function EditRecipePage(props: Readonly<EditRecipePageProps>) {
                 <MultipleCheckboxCategory categories={categories} handleCategories={handleCategoryChange}/>
                 <MultipleCheckboxType types={types} handleTypes={handleTypeChange}/>
 
-                <button type="submit">Save Changes</button>
-                <button onClick={() => props.recipe && navigate("/recipes/" + props.recipe.id)}>Cancel</button>
+                <Stack direction="row" spacing={2}>
+                    <Button variant="outlined" startIcon={<CancelIcon onClick={() => props.recipe && navigate("/recipes/" + props.recipe.id)} />}>
+                        Cancel
+                    </Button>
+                    <Button variant="contained" type="submit"  endIcon={<SendIcon/>}>
+                        Save Changes
+                    </Button>
+                </Stack>
 
             </form>
             <br/>

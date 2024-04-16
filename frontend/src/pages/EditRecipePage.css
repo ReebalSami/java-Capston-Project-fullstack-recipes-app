@@ -39,22 +39,11 @@ select {
     background-size: 12px;
 }
 
-button {
-    padding: 10px 20px;
-    margin-top: 20px;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-}
+
 
 button:hover {
     transform: scale(1.05);
     transition: transform 0.3s;
 }
 
-button:last-child {
-    margin-right: 10px;
-}
 

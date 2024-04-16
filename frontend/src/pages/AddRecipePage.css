@@ -29,17 +29,13 @@
     box-sizing: border-box;
 }
 
-.addRecipeForm button {
-    width: 100%;
-    padding: 10px;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+.upload-button:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s;}
 
 .error {
     color: red;
     text-align: center;
     margin-top: 10px;
 }
+

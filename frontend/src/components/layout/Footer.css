@@ -37,10 +37,3 @@ footer a:hover {
     text-decoration: underline;
 }
 
-footer.hidden {
-    transform: translateY(100%);
-}
-
-footer.visible {
-    transform: translateY(0);
-}

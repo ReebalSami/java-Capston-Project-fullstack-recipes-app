@@ -1,26 +1,9 @@
 import './Footer.css';
-import {useEffect, useState} from "react";
 
 export default function Footer() {
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const scrolledToBottom =
-                window.innerHeight + window.scrollY >= document.body.offsetHeight;
-
-            setIsVisible(scrolledToBottom);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
 
     return (
-        <footer className={isVisible ? 'visible' : 'hidden'}>
+        <footer >
             <div className="first-line">
                 &copy; 2024 RecipeApp. All rights reserved.
             </div>

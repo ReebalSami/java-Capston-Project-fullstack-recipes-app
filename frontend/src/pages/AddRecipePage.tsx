@@ -8,6 +8,14 @@ import MultipleCheckboxCategory from "../utility_functions/MultipleCheckboxCateg
 import MultipleCheckboxType from "../utility_functions/MultipleCheckboxType.tsx";
 import {RecipeDifficulty} from "../types/RecipeDifficulty.ts";
 import DifficultySelect from "../utility_functions/DifficultySelect.tsx";
+import {styled} from '@mui/material/styles';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {Button, Fab, Stack} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from '@mui/icons-material/Add';
+import SendIcon from '@mui/icons-material/Send';
+import CancelIcon from '@mui/icons-material/Cancel';
+import {useNavigate} from "react-router-dom";
 
 
 type AddRecipePageProps = {
@@ -31,6 +39,7 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
         imageUrl: ""
     });
     const [image, setImage] = useState<File>();
+    const navigate = useNavigate();
     const [error, setError] = useState(false);
     const changeFormValue = (key: string, value: RecipeFormPrimitiveInputValue) => {
         setRecipe((prevData) => ({
@@ -145,6 +154,18 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
             setImage(e.target.files[0]);
         }
     }
+
+    const VisuallyHiddenInput = styled('input')({
+        clipPath: 'inset(50%)',
+        height: 1,
+        overflow: 'hidden',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        whiteSpace: 'nowrap',
+        width: 1,
+    });
+
     return (
         <div className={"addRecipePage"}>
             <h1>Add Recipe</h1>
@@ -158,14 +179,22 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                     onChange={handleChangeEvent.bind(null, 'string', 'name')}
                 />
                 <label htmlFor={"image"}>Image:</label>
-                <input
-                    type={"file"}
-                    id={"image"}
-                    name={"image"}
-                    onChange={onImageChange}
-                />
+                <Button
+                    component="label"
+                    role={undefined}
+                    style={{width: 144.22}}
+                    variant="contained"
+                    className={"upload-button"}
+                    tabIndex={-1}
+                    startIcon={<CloudUploadIcon/>}
+                >
+                    Upload file
+                    <VisuallyHiddenInput type="file"
+                                         id={"image"}
+                                         name={"image"}
+                                         onChange={onImageChange}/>
+                </Button>
                 <img src={image ? URL.createObjectURL(image) : ""} alt={"Recipe"} className={"recipe-image"}/>
-
 
                 <label htmlFor="description">Description:</label>
                 <textarea
@@ -191,50 +220,65 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                 />
                 <label htmlFor="origin">Origin:</label>
                 <OriginSelect handleOrigins={handleChangeOrigin}/>
-                <label htmlFor="hours">Preparation Time (hours):</label>
-                <select
-                    id="hours"
-                    name="preparationTimeHours"
-                    value={recipe.preparationTime.hours}
-                    onChange={handleTimeInput.bind(null, 'preparationTime', 'preparationTimeHours', 'preparationTimeMinutes')}
-                >
-                    {[...Array(24).keys()].map((hour) => (
-                        <option key={hour} value={hour}>{hour}</option>
-                    ))}
-                </select>
-                <label htmlFor="minutes">Preparation Time (minutes):</label>
-                <select
-                    id="minutes"
-                    name="preparationTimeMinutes"
-                    value={recipe.preparationTime.minutes}
-                    onChange={handleTimeInput.bind(null, 'preparationTime', 'preparationTimeHours', 'preparationTimeMinutes')}
-                >
-                    {[...Array(60).keys()].map((minute) => (
-                        <option key={minute} value={minute}>{minute}</option>
-                    ))}
-                </select>
-                <label htmlFor="totalTimeHours">Total Time Hours:</label>
-                <select
-                    id="totalTimeHours"
-                    name="totalTimeHours"
-                    value={recipe.totalTime.hours}
-                    onChange={handleTimeInput.bind(null, 'totalTime', 'totalTimeHours', 'totalTimeMinutes')}
-                >
-                    {[...Array(24).keys()].map((hour) => (
-                        <option key={hour} value={hour}>{hour}</option>
-                    ))}
-                </select>
-                <label htmlFor="totalTimeMinutes">Total Time Minutes:</label>
-                <select
-                    id="totalTimeMinutes"
-                    name="totalTimeMinutes"
-                    value={recipe.totalTime.minutes}
-                    onChange={handleTimeInput.bind(null, 'totalTime', 'totalTimeHours', 'totalTimeMinutes')}
-                >
-                    {[...Array(60).keys()].map((minute) => (
-                        <option key={minute} value={minute}>{minute}</option>
-                    ))}
-                </select>
+                <div>
+                    <label htmlFor="hours" style={{display: 'inline-block', marginRight: '10px'}}>Preparation
+                        Time:</label>
+                    <select
+                        id="hours"
+                        name="preparationTimeHours"
+                        value={recipe.preparationTime.hours}
+                        onChange={handleTimeInput.bind(null, 'preparationTime', 'preparationTimeHours', 'preparationTimeMinutes')}
+                        style={{width: '100px', display: 'inline-block', marginRight: '5px'}} // Adjust width as needed
+                    >
+                        {[...Array(24).keys()].map((hour) => (
+                            <option key={hour} value={hour}>{hour}</option>
+                        ))}
+                    </select>
+                    <span style={{display: 'inline-block', marginRight: '5px'}}>h</span>
+                    <select
+                        id="minutes"
+                        name="preparationTimeMinutes"
+                        value={recipe.preparationTime.minutes}
+                        onChange={handleTimeInput.bind(null, 'preparationTime', 'preparationTimeHours', 'preparationTimeMinutes')}
+                        style={{width: '100px', display: 'inline-block', marginRight: '5px'}} // Adjust width as needed
+                    >
+                        {[...Array(60).keys()].map((minute) => (
+                            <option key={minute} value={minute}>{minute}</option>
+                        ))}
+                    </select>
+                    <span style={{display: 'inline-block'}}>min</span>
+                </div>
+
+
+                <div>
+                    <label htmlFor="totalTimeHours" style={{display: 'inline-block', marginRight: '10px'}}>Total Time
+                        Hours:</label>
+                    <select
+                        id="totalTimeHours"
+                        name="totalTimeHours"
+                        value={recipe.totalTime.hours}
+                        onChange={handleTimeInput.bind(null, 'totalTime', 'totalTimeHours', 'totalTimeMinutes')}
+                        style={{width: '100px', display: 'inline-block', marginRight: '5px'}} // Adjust width as needed
+                    >
+                        {[...Array(24).keys()].map((hour) => (
+                            <option key={hour} value={hour}>{hour}</option>
+                        ))}
+                    </select>
+                    <span style={{display: 'inline-block', marginRight: '5px'}}>h</span>
+                    <select
+                        id="totalTimeMinutes"
+                        name="totalTimeMinutes"
+                        value={recipe.totalTime.minutes}
+                        onChange={handleTimeInput.bind(null, 'totalTime', 'totalTimeHours', 'totalTimeMinutes')}
+                        style={{width: '100px', display: 'inline-block', marginRight: '5px'}} // Adjust width as needed
+                    >
+                        {[...Array(60).keys()].map((minute) => (
+                            <option key={minute} value={minute}>{minute}</option>
+                        ))}
+                    </select>
+                    <span style={{display: 'inline-block'}}>min</span>
+                </div>
+
 
                 <label htmlFor="category">Category:</label>
                 <MultipleCheckboxCategory categories={recipe.category} handleCategories={handleCategoryChange}/>
@@ -261,14 +305,25 @@ export default function AddRecipePage(props: Readonly<AddRecipePageProps>) {
                                 value={ingredient.quantity}
                                 onChange={(event) => handleChangeIngredients(event, index, 'quantity')}
                             />
-                            <button type="button" onClick={() => handleDeleteIngredient(index)}>Delete</button>
+                            <Fab color="secondary" aria-label="delete ingredient">
+                                <DeleteIcon onClick={() => handleDeleteIngredient(index)}/>
+                            </Fab>
                         </div>
                     ))}
-                    <button type="button" onClick={handleAddIngredient}>Add Ingredient</button>
+                    <Fab color="primary" aria-label="add ingredient">
+                        <AddIcon onClick={handleAddIngredient}/>
+                    </Fab>
                 </div>
                 <br/>
 
-                <button type="submit">Add Recipe</button>
+                <Stack direction="row" spacing={2}>
+                    <Button variant="outlined" startIcon={<CancelIcon onClick={() => navigate("/")} />}>
+                        Cancel
+                    </Button>
+                    <Button variant="contained" type="submit"  endIcon={<SendIcon/>}>
+                        Save Recipe
+                    </Button>
+                </Stack>
             </form>
             {error && <div className="error">Recipe already exists!</div>}
 
