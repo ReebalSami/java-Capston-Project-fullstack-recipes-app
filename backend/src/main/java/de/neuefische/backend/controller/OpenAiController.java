@@ -40,6 +40,7 @@ public class OpenAiController {
                 "Ingredients should include the following attributes: name: Fettuccine, quantity: 300g." +
                 "Description should not be longer than 30 words." +
                 "Instructions should not be longer than 50 words." +
+                "Author should be My Recipes AI. " +
                 "imageUrl should include one of the following for each Recipe: " +
                 "/images/cook_with_ai.jpeg" + "," +
                 "/images/cook_with_ai_2.jpeg" + "," +

@@ -2,9 +2,10 @@ import Navigation from "./Navigation.tsx";
 import "./Header.css";
 import UserAction from "../userActions/UserAction.tsx";
 import Search from "../search/Search.tsx";
+import {User} from "../../types/User.ts";
 
 type HeaderProps = {
-    user: string | undefined | null
+    user: User | undefined | null
 }
 export default function Header(props: Readonly<HeaderProps>) {
 

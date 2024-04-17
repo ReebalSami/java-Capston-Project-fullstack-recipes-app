@@ -6,10 +6,13 @@ import {CardActionArea, CardActions} from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import HalfRating from "../rating/Rating.tsx";
+import {User} from "../../types/User.ts";
+import RatingSystem from "../ratingSystem/RatingSystem.tsx";
 
 type RecipeCardProps = {
     recipe: Recipe
+    user: User | null | undefined
+    fetchRecipe: () => void
 }
 
 export default function RecipeCard(props: Readonly<RecipeCardProps>) {
@@ -43,7 +46,7 @@ export default function RecipeCard(props: Readonly<RecipeCardProps>) {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <HalfRating/>
+                <RatingSystem recipe={props.recipe} fetchData={props.fetchRecipe} user={props.user}/>
             </CardActions>
         </Card>
     );

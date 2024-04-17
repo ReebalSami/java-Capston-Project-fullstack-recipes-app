@@ -1,10 +1,14 @@
 import './HomePage.css';
 import {Recipe} from '../types/Recipe.ts';
 import RecipeCarousel from "../components/carousel/RecipeCarousel.tsx";
+import {User} from "../types/User.ts";
 
 type HomePageProps = {
     recipes: Recipe[];
-}
+    fetchRecipe: () => void;
+    user: User | null | undefined;
+
+};
 
 export default function HomePage(props: Readonly<HomePageProps>) {
 
@@ -15,7 +19,7 @@ export default function HomePage(props: Readonly<HomePageProps>) {
                 alt="Homepage"
                 className="homepage-image"/>
 
-            <RecipeCarousel recipes={props.recipes}/>
+            <RecipeCarousel fetchRecipe={props.fetchRecipe} user={props.user} recipes={props.recipes}/>
 
 
             <br/>

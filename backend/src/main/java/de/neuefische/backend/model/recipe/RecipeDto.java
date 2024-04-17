@@ -16,7 +16,8 @@ public record RecipeDto(
         List<RecipeCategory> category,
         RecipeDifficulty difficulty,
         List<RecipeIngredients> ingredients,
-        String imageUrl
+        String imageUrl,
+        List<Rating> ratings
 ) {
 
 }

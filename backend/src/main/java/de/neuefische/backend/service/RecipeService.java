@@ -55,7 +55,8 @@ public class RecipeService {
                 recipeDto.category(),
                 recipeDto.difficulty(),
                 recipeDto.ingredients(),
-                recipeDto.imageUrl()
+                recipeDto.imageUrl(),
+                null
         ));
 
         return new RecipeNormalized(temp);

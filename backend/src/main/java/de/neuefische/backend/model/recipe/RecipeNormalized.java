@@ -1,9 +1,8 @@
 package de.neuefische.backend.model.recipe;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -23,6 +22,9 @@ public class RecipeNormalized {
     private String difficulty;
     private List<RecipeIngredients> ingredients;
     private String imageUrl;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Rating> ratings = new ArrayList<>();
 
     public RecipeNormalized(Recipe recipe) {
         this.id = recipe.getId();
@@ -38,5 +40,6 @@ public class RecipeNormalized {
         this.difficulty = recipe.getDifficulty().getNormalDifficulty();
         this.ingredients = recipe.getIngredients();
         this.imageUrl = recipe.getImageUrl();
+        this.ratings = recipe.getRatings();
     }
 }

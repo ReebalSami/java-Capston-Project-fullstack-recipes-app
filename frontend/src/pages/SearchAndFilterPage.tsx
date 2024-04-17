@@ -3,9 +3,12 @@ import {useEffect, useState} from "react";
 import RecipeCard from "../components/RecipeCard/RecipeCard.tsx";
 import {Autocomplete, TextField} from "@mui/material";
 import {useParams} from "react-router-dom";
+import {User} from "../types/User.ts";
 
 type SearchAndFilterPageProps = {
     recipes: Recipe[];
+    fetchRecipe: () => void;
+    user: User | null | undefined;
 }
 
 export default function SearchAndFilterPage(props: Readonly<SearchAndFilterPageProps>) {
@@ -71,7 +74,7 @@ export default function SearchAndFilterPage(props: Readonly<SearchAndFilterPageP
                 <div className="recipes-container"
                      style={{display: 'flex', flexWrap: 'wrap', gap: '20px', marginTop: '20px'}}>
                     {filteredRecipes.map((recipe) => (
-                        <RecipeCard key={recipe.id} recipe={recipe}/>
+                        <RecipeCard key={recipe.id} recipe={recipe} fetchRecipe={props.fetchRecipe} user={props.user}/>
                     ))}
                 </div>
             </div>

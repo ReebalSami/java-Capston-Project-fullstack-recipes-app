@@ -1,11 +1,13 @@
 import {ReactNode, useEffect, useState} from "react";
 import Footer from "./Footer.tsx";
 import Header from "./Header.tsx";
+import {User} from "../../types/User.ts";
 
 type LayoutProps = {
     children: ReactNode;
-    user: string | undefined | null;
+    user: User | undefined | null;
 };
+
 
 export default function Layout(props: Readonly<LayoutProps>) {
     const [showFooter, setShowFooter] = useState(false);
